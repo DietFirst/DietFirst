@@ -17,7 +17,7 @@ const Navbar = () => {
               Home
             </li>
             <li className="border-b-2 border-transparent hover:border-b-2 py-1 hover:border-white">About Us</li>
-            <button className="border border-white rounded-full py-1 px-6 text-white hover:bg-white hover:text-blue-600 transition duration-300">
+            <button className="border border-white rounded-full py-1 px-6 hover:text-black hover:bg-white transition duration-300">
             <li className="border-transparent hover:border-white">Sign Up</li>
             </button>
 
