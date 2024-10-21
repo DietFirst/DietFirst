@@ -1,16 +1,20 @@
-import React from 'react'
-import Home from "./pages/Home";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Form from './pages/Form/Form'; // Import your Form component
+import Home from './pages/Home';
 import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
 
-const App = () => {
-  return (
-    <div>
-      <Navbar></Navbar>
-      <Home></Home>
-      <HeroSection></HeroSection>
-    </div>
-  )
+function App() {
+    return (
+        <Router>
+            <Navbar />
+
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/form" element={<Form />} /> {/* Ensure the path matches */}
+            </Routes>
+
+        </Router>
+    );
 }
 
-export default App
+export default App;
