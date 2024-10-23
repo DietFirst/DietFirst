@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
+const preferenceRoutes = require("./routes/preferences");
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ mongoose
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/preferences", preferenceRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;
