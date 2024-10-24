@@ -1,22 +1,37 @@
-export default function StepperControl({ handleClick, currentStep, steps }) {
-    return (
-      <div className="container mt-4 mb-8 flex justify-around">
-        <button
-          onClick={() => handleClick()}
-          className={`cursor-pointer rounded-xl border-2 border-slate-300 bg-white py-2 px-4 font-semibold uppercase text-slate-400 transition duration-200 ease-in-out hover:bg-slate-700 hover:text-white  ${
-            currentStep === 1 ? " cursor-not-allowed opacity-50 " : ""
-          }`}
-        >
-          Back
-        </button>
-  
-        <button
-          onClick={() => handleClick("next")}
-          className="cursor-pointer rounded-lg bg-cyan-600 py-2 px-4 font-semibold uppercase text-white transition duration-200 ease-in-out hover:bg-slate-700 hover:text-white"
-        >
-          {currentStep === steps.length - 1 ? "Confirm" : "Next"}
-        </button>
-      </div>
-    );
-  }
-  
+import React from "react";
+
+export default function StepperControl({
+  handleClick,
+  currentStep,
+  steps,
+  loading,
+}) {
+  return (
+    <div className="flex justify-between mt-5">
+      <button
+        onClick={() => handleClick("back")}
+        className={`px-4 py-2 rounded-md ${
+          currentStep === 1
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-blue-500 text-white"
+        }`}
+        disabled={currentStep === 1 || loading}
+      >
+        Back
+      </button>
+      <button
+        onClick={() => handleClick("next")}
+        className={`px-4 py-2 rounded-md ${
+          loading ? "bg-gray-300 cursor-not-allowed" : "bg-green-500 text-white"
+        }`}
+        disabled={loading}
+      >
+        {loading
+          ? "Submitting..."
+          : currentStep === steps.length - 1
+          ? "Submit"
+          : "Next"}
+      </button>
+    </div>
+  );
+}

@@ -1,39 +1,26 @@
-import { useState } from 'react'; // Ensure you import useState
+import { useState, useEffect } from "react";
 import { useStepperContext } from "../StepperContext";
 
 export default function DietRestrictions() {
   const { userData, setUserData } = useStepperContext();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const [restrictions, setRestrictions] = useState({
-    glutenFree: false,
-    dairyFree: false,
-    nutFree: false,
-    vegan: false,
-    vegetarian: false,
-    halal: false,
-    kosher: false, 
-    paleo: false,
-    keto: false,
-    fodmap: false,
-    rawfood: false,
-    lowSodium: false,
-    LowCarbohydrate: false,
-    SulfiteSensitivity: false,
-    CeliacDisease: false,
-  });
+  const [restrictions, setRestrictions] = useState([]);
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
-    setRestrictions((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
+    if (checked) {
+      setRestrictions((prev) => [...prev, name]);
+    } else {
+      setRestrictions((prev) => prev.filter((item) => item !== name));
+    }
   };
+
+  useEffect(() => {
+    setUserData((prevData) => ({
+      ...prevData,
+      dietaryRestrictions: restrictions,
+    }));
+  }, [restrictions, setUserData]);
 
   return (
     <div className="flex flex-col">
@@ -45,16 +32,32 @@ export default function DietRestrictions() {
           <h2 className="text-lg font-semibold mb-2">Dietary Restrictions</h2>
           <form>
             <div className="flex flex-col uppercase">
-              {Object.keys(restrictions).map((key) => (
+              {[
+                "glutenFree",
+                "dairyFree",
+                "nutFree",
+                "vegan",
+                "vegetarian",
+                "halal",
+                "kosher",
+                "paleo",
+                "keto",
+                "fodmap",
+                "rawfood",
+                "lowSodium",
+                "LowCarbohydrate",
+                "SulfiteSensitivity",
+                "CeliacDisease",
+              ].map((key) => (
                 <label key={key} className="flex items-center mb-2">
                   <input
                     type="checkbox"
                     className="mr-2"
                     name={key}
-                    checked={restrictions[key]}
+                    checked={restrictions.includes(key)}
                     onChange={handleCheckboxChange}
                   />
-                  {key.replace(/([A-Z])/g, ' $1').trim()} {/* Converts camelCase to readable text */}
+                  {key.replace(/([A-Z])/g, " $1").trim()}
                 </label>
               ))}
             </div>
@@ -67,9 +70,14 @@ export default function DietRestrictions() {
         </label>
         <div className="bg-white my-2 p-1 flex border border-gray-200 rounded">
           <input
-            onChange={handleChange}
-            value={userData.city || ""}
-            name="restriction"
+            onChange={(e) =>
+              setUserData({
+                ...userData,
+                otherDietaryRestriction: e.target.value,
+              })
+            }
+            value={userData.otherDietaryRestriction}
+            name="otherDietaryRestriction"
             placeholder="Enter Your Restriction Here"
             type="text"
             className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
