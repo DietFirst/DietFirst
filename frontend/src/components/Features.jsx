@@ -1,5 +1,5 @@
 import React from 'react';
-import image1 from '/Users/harmainmunir/Desktop/DietFirst/diet-first/frontend/src/images/healthyimg.jpg'; // Adjust the path if necessary
+import image1 from '../images/healthyimg.jpg';
 
 const Features = () => {
   return (

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import bgimage from "/Users/harmainmunir/Desktop/DietFirst/diet-first/frontend/src/images/bgimg2.jpg";
+import bgimage from '../images/bgimg2.jpg';
 
 
 const HeroSection = () => {

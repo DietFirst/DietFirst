@@ -1,8 +1,8 @@
 import React from 'react';
-import checkbox from "/Users/harmainmunir/Desktop/DietFirst/diet-first/frontend/src/images/checkbox1.png"; // Adjust path as necessary
-import image1 from "/Users/harmainmunir/Desktop/DietFirst/diet-first/frontend/src/images/healthyimg.jpg"; 
-import image2 from "/Users/harmainmunir/Desktop/DietFirst/diet-first/frontend/src/images/healthyimg2.png";
-import image3 from "/Users/harmainmunir/Desktop/DietFirst/diet-first/frontend/src/images/healthyimg3.webp";
+import checkbox from '../images/checkbox1.png'; 
+import image1 from '../images/healthyimg.jpg'; 
+import image2 from '../images/healthyimg2.png';
+import image3 from '../images/healthyimg3.webp';
 
 const AboutSection = () => {
   return (
