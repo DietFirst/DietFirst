@@ -1,9 +1,14 @@
 import React from 'react'
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import bgimage from "/Users/harmainmunir/Desktop/DietFirst/diet-first/frontend/src/images/bgimg2.jpg";
 
 
 const HeroSection = () => {
+ 
+
+
+
     const navigate = useNavigate(); // Initialize the navigate function
 
     const handleClick = () => {
@@ -14,8 +19,34 @@ const HeroSection = () => {
 
 
   return (
+  
+  
+
+
     <section className="lg:py-16 h-screen">
+
+
+      <img 
+        src={bgimage}
+        alt="Hero Background" 
+        style={{ 
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '100%',
+          opacity: 0.5, 
+          height: '80%',
+          objectFit: 'cover', // Ensures the image covers the entire section
+          transform: 'translate(-50%, -50%)', // Centers the image
+          zIndex: -1 // Sends the image to the back
+        }} 
+      />
+
+
     <div className="flex flex-col justify-center items-center h-full">
+  
+
+
       <h1 className="text-white mb-4 text-5xl sm:text-xl lg:text-6xl lg:leading-normal font-extrabold">
         Welcome To Diet First
       </h1>
@@ -30,7 +61,13 @@ const HeroSection = () => {
   <span className=" rounded-full px-5 py-5 bg-cyan-600"> 
     <FaArrowRightLong className="text-white" />
   </span>
+
+
+
 </button>
+
+
+
       
 
 
