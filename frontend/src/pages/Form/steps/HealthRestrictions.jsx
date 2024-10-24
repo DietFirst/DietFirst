@@ -1,39 +1,26 @@
-import { useState } from 'react'; // Ensure you import useState
+import { useState, useEffect } from "react";
 import { useStepperContext } from "../StepperContext";
 
 export default function HealthRestrictions() {
   const { userData, setUserData } = useStepperContext();
 
-  const [healthRestrictions, setHealthRestrictions] = useState({
-    diabetes: false,
-    hypertension: false,
-    heartDisease: false,
-    highCholesterol: false,
-    obesity: false,
-    celiacDisease: false,
-    lactoseIntolerance: false,
-    glutenSensitivity: false,
-    kidneyDisease: false,
-    liverDisease: false,
-    thyroidDisorder: false,
-    autoimmuneDisorder: false,
-    anxiety: false,
-    depression: false,
-    asthma: false,
-  });
+  const [healthRestrictions, setHealthRestrictions] = useState([]);
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
-    setHealthRestrictions((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
+    if (checked) {
+      setHealthRestrictions((prev) => [...prev, name]);
+    } else {
+      setHealthRestrictions((prev) => prev.filter((item) => item !== name));
+    }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
+  useEffect(() => {
+    setUserData((prevData) => ({
+      ...prevData,
+      healthDiseases: healthRestrictions,
+    }));
+  }, [healthRestrictions, setUserData]);
 
   return (
     <div className="flex flex-col">
@@ -45,16 +32,32 @@ export default function HealthRestrictions() {
           <h2 className="text-lg font-semibold mb-2">Health Diseases</h2>
           <form>
             <div className="flex flex-col uppercase">
-              {Object.keys(healthRestrictions).map((key) => (
+              {[
+                "diabetes",
+                "hypertension",
+                "heartDisease",
+                "highCholesterol",
+                "obesity",
+                "celiacDisease",
+                "lactoseIntolerance",
+                "glutenSensitivity",
+                "kidneyDisease",
+                "liverDisease",
+                "thyroidDisorder",
+                "autoimmuneDisorder",
+                "anxiety",
+                "depression",
+                "asthma",
+              ].map((key) => (
                 <label key={key} className="flex items-center mb-2">
                   <input
                     type="checkbox"
                     className="mr-2"
                     name={key}
-                    checked={healthRestrictions[key]} // Updated from `restrictions[key]`
+                    checked={healthRestrictions.includes(key)}
                     onChange={handleCheckboxChange}
                   />
-                  {key.replace(/([A-Z])/g, ' $1').trim()} {/* Converts camelCase to readable text */}
+                  {key.replace(/([A-Z])/g, " $1").trim()}
                 </label>
               ))}
             </div>
@@ -67,10 +70,12 @@ export default function HealthRestrictions() {
         </label>
         <div className="bg-white my-2 p-1 flex border border-gray-200 rounded">
           <input
-            onChange={handleChange}
-            value={userData.healthRestrictions || ""} // Updated from `userData.city`
-            name="restriction"
-            placeholder="Enter Your Restriction Here"
+            onChange={(e) =>
+              setUserData({ ...userData, otherHealthProblem: e.target.value })
+            }
+            value={userData.otherHealthProblem}
+            name="otherHealthProblem"
+            placeholder="Enter Your Health Problem Here"
             type="text"
             className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
           />
