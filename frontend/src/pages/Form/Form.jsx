@@ -5,8 +5,10 @@ import { UseContextProvider, useStepperContext } from "./StepperContext";
 
 import Account from "./steps/Account";
 import Details from "./steps/DietRestrictions";
-import Payment from "./steps/HealthRestrictions";
+import AllergyRestrictions from "./steps/AllergyRestrictions";
+import Calories from "./steps/Calories";
 import Final from "./steps/Final";
+import Nutrients from "./steps/Nutrients";
 
 function FormContent() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -16,8 +18,10 @@ function FormContent() {
 
   const steps = [
     "Account Information",
-    "Diet Goals",
-    "Health Restrictions",
+    "Diet Restrictions",
+    "Allergy Restrictions",
+    "Calories Intake",
+    "Nutrients Selection",
     "Complete",
   ];
 
@@ -28,9 +32,13 @@ function FormContent() {
       case 2:
         return <Details />;
       case 3:
-        return <Payment />;
-      case 4:
-        return <Final />;
+        return <AllergyRestrictions />;
+      case 4: 
+        return <Calories />;
+      case 5:
+        return <Nutrients />;
+      case 6:
+        return <Final />
       default:
         return <Account />;
     }
@@ -46,7 +54,7 @@ function FormContent() {
         setError("");
         try {
           const API_URL = import.meta.env.VITE_API_URL;
-          console.log("SENDING TO BACKEND NOW BITCH");
+          console.log("SENDING TO BACKEND NOW");
           // Register the user
           const registerResponse = await fetch(`${API_URL}/auth/register`, {
             method: "POST",
