@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import bgImage from "/Users/harmainmunir/Desktop/DietFirst/diet-first/frontend/src/images/bgimg2.jpg"
 
 const Stepper = ({ steps, currentStep }) => {
   const [newStep, setNewStep] = useState([]);
@@ -6,10 +7,9 @@ const Stepper = ({ steps, currentStep }) => {
 
   const updateStep = (stepNumber, steps) => {
     const newSteps = [...steps];
-    console.log(newSteps);
     let count = 0;
     while (count < newSteps.length) {
-      //current step
+      // Current step
       if (count === stepNumber) {
         newSteps[count] = {
           ...newSteps[count],
@@ -18,9 +18,8 @@ const Stepper = ({ steps, currentStep }) => {
           completed: true,
         };
         count++;
-      }
-
-      //step completed
+      } 
+      // Step completed
       else if (count < stepNumber) {
         newSteps[count] = {
           ...newSteps[count],
@@ -29,8 +28,8 @@ const Stepper = ({ steps, currentStep }) => {
           completed: true,
         };
         count++;
-      }
-      //step pending
+      } 
+      // Step pending
       else {
         newSteps[count] = {
           ...newSteps[count],
@@ -47,15 +46,12 @@ const Stepper = ({ steps, currentStep }) => {
 
   useEffect(() => {
     const stepsState = steps.map((step, index) =>
-      Object.assign(
-        {},
-        {
-          description: step,
-          completed: false,
-          highlighted: index === 0 ? true : false,
-          selected: index === 0 ? true : false,
-        }
-      )
+      Object.assign({}, {
+        description: step,
+        completed: false,
+        highlighted: index === 0 ? true : false,
+        selected: index === 0 ? true : false,
+      })
     );
 
     stepsRef.current = stepsState;
@@ -67,18 +63,12 @@ const Stepper = ({ steps, currentStep }) => {
     return (
       <div
         key={index}
-        className={
-          index !== newStep.length - 1
-            ? "w-full flex items-center"
-            : "flex items-center"
-        }
+        className="flex flex-col items-center mb-20" // Use flex-col for vertical stacking
       >
-        <div className="relative flex flex-col items-center text-teal-600">
+        <div className="flex relative flex-col items-center text-teal-600">
           <div
-            className={`rounded-full transition duration-500 ease-in-out border-2 border-gray-300 h-12 w-12 flex items-center justify-center py-3  ${
-              step.selected
-                ? "bg-cyan-600 text-white font-bold border border-cyan-600 "
-                : ""
+            className={`rounded-full transition duration-500 ease-in-out border-2 border-zinc-50 h-12 w-12 flex items-center justify-center ${
+              step.selected ? "bg-cyan-600 text-white font-bold border border-cyan-600" : ""
             }`}
           >
             {step.completed ? (
@@ -88,26 +78,48 @@ const Stepper = ({ steps, currentStep }) => {
             )}
           </div>
           <div
-            className={`absolute top-0  text-center mt-16 w-32 text-xs font-medium uppercase ${
-              step.highlighted ? "text-gray-900" : "text-gray-400"
+            className={`absolute text-center mt-16 w-32 text-xs font-medium uppercase ${
+              step.highlighted ? "text-gray-600" : "text-gray-600"
             }`}
           >
             {step.description}
           </div>
         </div>
-        <div
-          className={`flex-auto border-t-2 transition duration-500 ease-in-out  ${
-            step.completed ? "border-cyan-600" : "border-gray-300 "
-          }  `}
-        ></div>
+        {index !== newStep.length - 1 && ( // Avoid adding a line after the last step
+          <div
+            className={`flex-auto border-t-2 transition duration-500 ease-in-out ${
+              step.completed ? "border-cyan-600" : "border-gray-300"
+            }`}
+          ></div>
+        )}
       </div>
     );
   });
 
   return (
-    <div className="mx-4 p-4 flex justify-between items-center">
-      {stepsDisplay}
+    <div className="relative w-64 mt-10 ml-5 p-4 rounded-md flex flex-col justify-start overflow-hidden">
+      {/* Background Image with Blur */}
+      <div
+        className="absolute inset-0 rounded-md"
+        style={{
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          zIndex: 0, // Ensure it's behind the content
+          filter: 'blur(1px)', // Apply blur effect to the background
+          opacity: 0.8,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: '700%', // Adjust this value to control the zoom level
+
+
+        }}
+      />
+      {/* Content on top */}
+      <div className="relative z-10"> {/* Content remains clear */}
+        {stepsDisplay}
+      </div>
     </div>
   );
 };
+
 export default Stepper;

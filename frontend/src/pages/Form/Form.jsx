@@ -114,27 +114,34 @@ function FormContent() {
     newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
   };
   return (
-    <div className="mx-auto rounded-2xl pb-2 bg-white shadow-xl md:w-1/2 mt-32">
+    <div className="mx-auto rounded-2xl pb-2 bg-white shadow-xl md:w-3/4 mt-32">
+    {/* Stepper Container */}
+    <div className="flex">
       {/* Stepper */}
-      <div className="horizontal container mt-5 ">
+      <div className="flex"> {/* Optional: This makes sure Stepper takes only the space it needs */}
         <Stepper steps={steps} currentStep={currentStep} />
-
-        <div className="my-10 p-10 ">{displayStep(currentStep)}</div>
       </div>
-
-      {/* Display error message */}
-      {error && <div className="text-red-500 text-center mb-4">{error}</div>}
-
-      {/* Navigation buttons */}
-      {currentStep !== steps.length && (
-        <StepperControl
-          handleClick={handleClick}
-          currentStep={currentStep}
-          steps={steps}
-          loading={loading}
-        />
-      )}
+  
+      {/* Step Content */}
+      <div className="my-10 p-10 flex-grow"> {/* Use flex-grow to take the remaining space */}
+        {displayStep(currentStep)}
+      </div>
     </div>
+  
+    {/* Display error message */}
+    {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+  
+    {/* Navigation buttons */}
+    {currentStep !== steps.length && (
+      <StepperControl
+        handleClick={handleClick}
+        currentStep={currentStep}
+        steps={steps}
+        loading={loading}
+      />
+    )}
+  </div>
+  
   );
 }
 
