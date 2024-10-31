@@ -16,8 +16,8 @@ router.post("/", async (req, res) => {
   } = req.body;
 
   try {
-    // Check if all required fields are present
-    if (!userId || !dietaryRestrictions) {
+    // Check if required fields are present
+    if (!userId) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
