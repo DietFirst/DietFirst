@@ -4,7 +4,10 @@ const UserPreferenceSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   dietaryRestrictions: [{ type: String }],
   allergyRestrictions: [{ type: String }],
-  caloriesInTake: { type: Number },
+  caloriesInTake: {
+    min: { type: Number },
+    max: { type: Number },
+  },
   nutrientsSelection: [{ type: String }],
 });
 
