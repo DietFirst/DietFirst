@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import bgImage from "/Users/harmainmunir/Desktop/DietFirst/diet-first/frontend/src/images/bgimg2.jpg"
+import bgImage from "../../images/bgimg2.jpg";
 
 const Stepper = ({ steps, currentStep }) => {
   const [newStep, setNewStep] = useState([]);
@@ -18,7 +18,7 @@ const Stepper = ({ steps, currentStep }) => {
           completed: true,
         };
         count++;
-      } 
+      }
       // Step completed
       else if (count < stepNumber) {
         newSteps[count] = {
@@ -28,7 +28,7 @@ const Stepper = ({ steps, currentStep }) => {
           completed: true,
         };
         count++;
-      } 
+      }
       // Step pending
       else {
         newSteps[count] = {
@@ -46,12 +46,15 @@ const Stepper = ({ steps, currentStep }) => {
 
   useEffect(() => {
     const stepsState = steps.map((step, index) =>
-      Object.assign({}, {
-        description: step,
-        completed: false,
-        highlighted: index === 0 ? true : false,
-        selected: index === 0 ? true : false,
-      })
+      Object.assign(
+        {},
+        {
+          description: step,
+          completed: false,
+          highlighted: index === 0 ? true : false,
+          selected: index === 0 ? true : false,
+        }
+      )
     );
 
     stepsRef.current = stepsState;
@@ -68,7 +71,9 @@ const Stepper = ({ steps, currentStep }) => {
         <div className="flex relative flex-col items-center text-teal-600">
           <div
             className={`rounded-full transition duration-500 ease-in-out border-2 border-zinc-50 h-12 w-12 flex items-center justify-center ${
-              step.selected ? "bg-cyan-600 text-white font-bold border border-cyan-600" : ""
+              step.selected
+                ? "bg-cyan-600 text-white font-bold border border-cyan-600"
+                : ""
             }`}
           >
             {step.completed ? (
@@ -103,19 +108,19 @@ const Stepper = ({ steps, currentStep }) => {
         className="absolute inset-0 rounded-md"
         style={{
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
           zIndex: 0, // Ensure it's behind the content
-          filter: 'blur(1px)', // Apply blur effect to the background
+          filter: "blur(1px)", // Apply blur effect to the background
           opacity: 0.8,
           backgroundRepeat: "no-repeat",
-          backgroundSize: '700%', // Adjust this value to control the zoom level
-
-
+          backgroundSize: "700%", // Adjust this value to control the zoom level
         }}
       />
       {/* Content on top */}
-      <div className="relative z-10"> {/* Content remains clear */}
+      <div className="relative z-10">
+        {" "}
+        {/* Content remains clear */}
         {stepsDisplay}
       </div>
     </div>
