@@ -33,12 +33,12 @@ function FormContent() {
         return <Details />;
       case 3:
         return <AllergyRestrictions />;
-      case 4: 
+      case 4:
         return <Calories />;
       case 5:
         return <Nutrients />;
       case 6:
-        return <Final />
+        return <Final />;
       default:
         return <Account />;
     }
@@ -48,13 +48,15 @@ function FormContent() {
     let newStep = currentStep;
 
     if (direction === "next") {
-      if (currentStep === 3) {
+      if (currentStep === 5) {
+        // Adjust to submit data at the last step before completion
         // Submit data
         setLoading(true);
         setError("");
         try {
           const API_URL = import.meta.env.VITE_API_URL;
           console.log("SENDING TO BACKEND NOW");
+
           // Register the user
           const registerResponse = await fetch(`${API_URL}/auth/register`, {
             method: "POST",
@@ -86,9 +88,9 @@ function FormContent() {
             body: JSON.stringify({
               userId: userId,
               dietaryRestrictions: userData.dietaryRestrictions,
-              healthDiseases: userData.healthDiseases,
-              otherDietaryRestriction: userData.otherDietaryRestriction,
-              otherHealthProblem: userData.otherHealthProblem,
+              allergyRestrictions: userData.allergyRestrictions,
+              caloriesInTake: userData.caloriesInTake,
+              nutrientsSelection: userData.nutrientsSelection,
             }),
           });
 
@@ -113,35 +115,33 @@ function FormContent() {
 
     newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
   };
+
   return (
     <div className="mx-auto rounded-2xl pb-2 bg-white shadow-xl md:w-3/4 mt-32">
-    {/* Stepper Container */}
-    <div className="flex">
-      {/* Stepper */}
-      <div className="flex"> {/* Optional: This makes sure Stepper takes only the space it needs */}
-        <Stepper steps={steps} currentStep={currentStep} />
+      {/* Stepper Container */}
+      <div className="flex">
+        {/* Stepper */}
+        <div className="flex">
+          <Stepper steps={steps} currentStep={currentStep} />
+        </div>
+
+        {/* Step Content */}
+        <div className="my-10 p-10 flex-grow">{displayStep(currentStep)}</div>
       </div>
-  
-      {/* Step Content */}
-      <div className="my-10 p-10 flex-grow"> {/* Use flex-grow to take the remaining space */}
-        {displayStep(currentStep)}
-      </div>
+
+      {/* Display error message */}
+      {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+
+      {/* Navigation buttons */}
+      {currentStep !== steps.length && (
+        <StepperControl
+          handleClick={handleClick}
+          currentStep={currentStep}
+          steps={steps}
+          loading={loading}
+        />
+      )}
     </div>
-  
-    {/* Display error message */}
-    {error && <div className="text-red-500 text-center mb-4">{error}</div>}
-  
-    {/* Navigation buttons */}
-    {currentStep !== steps.length && (
-      <StepperControl
-        handleClick={handleClick}
-        currentStep={currentStep}
-        steps={steps}
-        loading={loading}
-      />
-    )}
-  </div>
-  
   );
 }
 
