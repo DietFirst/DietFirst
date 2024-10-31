@@ -48,7 +48,7 @@ export default function DietRestrictions() {
                 "treenut free",
                 "wheat free",
                 "FODMAP free",
-                "immuno supportive"
+                "immuno supportive",
               ].map((key) => (
                 <label key={key} className="flex items-center mb-2">
                   <input
@@ -65,10 +65,7 @@ export default function DietRestrictions() {
           </form>
         </div>
       </div>
-      <div className="w-full mx-2 flex-1 mt-5">
-      
-     
-      </div>
+      <div className="w-full mx-2 flex-1 mt-5"></div>
     </div>
   );
 }

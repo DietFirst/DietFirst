@@ -10,14 +10,14 @@ router.post("/", async (req, res) => {
   const {
     userId,
     dietaryRestrictions,
-    healthDiseases,
-    otherDietaryRestriction,
-    otherHealthProblem,
+    allergyRestrictions,
+    caloriesInTake,
+    nutrientsSelection,
   } = req.body;
 
   try {
     // Check if all required fields are present
-    if (!userId || !dietaryRestrictions || !healthDiseases) {
+    if (!userId || !dietaryRestrictions) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
@@ -30,9 +30,9 @@ router.post("/", async (req, res) => {
     const newPreference = new UserPreference({
       userId,
       dietaryRestrictions,
-      healthDiseases,
-      otherDietaryRestriction,
-      otherHealthProblem,
+      allergyRestrictions,
+      caloriesInTake,
+      nutrientsSelection,
     });
 
     const savedPreference = await newPreference.save();

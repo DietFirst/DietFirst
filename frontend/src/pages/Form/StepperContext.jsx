@@ -8,9 +8,9 @@ export const UseContextProvider = ({ children }) => {
     email: "",
     password: "",
     dietaryRestrictions: [],
-    healthDiseases: [],
-    otherDietaryRestriction: "",
-    otherHealthProblem: "",
+    allergyRestrictions: [],
+    caloriesInTake: null,
+    nutrientsSelection: [],
   });
 
   return (
