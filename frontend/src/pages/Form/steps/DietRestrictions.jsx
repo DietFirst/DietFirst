@@ -18,7 +18,7 @@ export default function DietRestrictions() {
   useEffect(() => {
     setUserData((prevData) => ({
       ...prevData,
-      restrictions: restrictions,
+      dietaryRestrictions: restrictions,
     }));
   }, [restrictions, setUserData]);
 
