@@ -2,70 +2,85 @@ import { useState, useEffect } from "react";
 import { useStepperContext } from "../StepperContext";
 
 export default function DietRestrictions() {
-  const { userData, setUserData } = useStepperContext();
+  const [checkedItems, setCheckedItems] = useState({});
+  const { setUserData } = useStepperContext();
 
-  const [restrictions, setRestrictions] = useState([]);
-
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    if (checked) {
-      setRestrictions((prev) => [...prev, name]);
-    } else {
-      setRestrictions((prev) => prev.filter((item) => item !== name));
-    }
+  const toggleCheckbox = (key) => {
+    setCheckedItems((prevCheckedItems) => ({
+      ...prevCheckedItems,
+      [key]: !prevCheckedItems[key],
+    }));
   };
 
   useEffect(() => {
+    const selectedDiets = Object.keys(checkedItems).filter(
+      (key) => checkedItems[key]
+    );
+
     setUserData((prevData) => ({
       ...prevData,
-      dietaryRestrictions: restrictions,
+      dietRestrictions: selectedDiets,
     }));
-  }, [restrictions, setUserData]);
+  }, [checkedItems, setUserData]);
 
   return (
     <div className="flex flex-col">
       <div className="mx-2 w-full flex-1">
-        <label className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
-          Do you have any specific allergies? Check all that apply
+        <label className="mt-3 h-6 text-md font-bold uppercase leading-8 text-black">
+          What are your specific diet restrictions? Check all that apply
         </label>
-        <div className="rounded-md bg-gray-100 p-4">
-          <h2 className="mb-2 text-lg font-semibold">Allergy Restrictions</h2>
+        <div className="rounded-md bg-gray-100 h-screen p-4">
           <form>
-            <div className="flex flex-col uppercase">
+            <div className="grid grid-cols-3 gap-4 mt-20">
               {[
-                "celery free",
-                "crustacean free",
-                "dairy free",
-                "egg free",
-                "fish free",
-                "gluten free",
-                "lupine free",
-                "mustard free",
-                "peanut free",
-                "sesame free",
-                "shellfish free",
-                "soyfree",
-                "treenut free",
-                "wheat free",
-                "FODMAP free",
-                "immuno supportive",
+                "alcohol free",
+                "balanced",
+                "DASH",
+                "High Fiber",
+                "High Protein",
+                "Keto",
+                "Kidney Friendly",
+                "Kosher",
+                "Low Carb",
+                "Low Fat",
+                "Low Potassium",
+                "Low Sodium",
+                "Mediterranean",
+                "No Oil Added",
+                "No Sugar",
+                "Paleo",
+                "Pescatarian",
+                "Pork Free",
+                "Red Meat Free",
+                "Sugar Conscious",
+                "Vegan",
+                "Vegetarian",
+                "Mollusk Free",
+                "Sulfite Free",
               ].map((key) => (
-                <label key={key} className="mb-2 flex items-center">
-                  <input
-                    type="checkbox"
-                    className="mr-2"
-                    name={key}
-                    checked={restrictions.includes(key)}
-                    onChange={handleCheckboxChange}
-                  />
-                  {key.replace(/([A-Z])/g, " $1").trim()}
-                </label>
+                <div
+                  key={key}
+                  className="inline-flex cursor-pointer items-center space-x-2 rounded-full bg-gray-200 px-3 py-2 uppercase"
+                  onClick={() => toggleCheckbox(key)}
+                >
+                  <div
+                    className={`flex h-6 w-6 items-center justify-center rounded-full border-2 ${
+                      checkedItems[key]
+                        ? "border-cyan-600 bg-cyan-600 text-white"
+                        : "border-gray-400 text-gray-400"
+                    } transition duration-300`}
+                  >
+                    <span>{checkedItems[key] ? "✓" : "+"}</span>
+                  </div>
+                  <span className="text-gray-700">
+                    {key.replace(/([A-Z])/g, " $1").trim()}
+                  </span>
+                </div>
               ))}
             </div>
           </form>
         </div>
       </div>
-      <div className="mx-2 mt-5 w-full flex-1"></div>
     </div>
   );
 }

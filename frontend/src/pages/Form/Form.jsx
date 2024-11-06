@@ -4,11 +4,11 @@ import StepperControl from "./StepperControl";
 import { UseContextProvider, useStepperContext } from "./StepperContext";
 
 import Account from "./steps/Account";
-import Details from "./steps/DietRestrictions";
-import AllergyRestrictions from "./steps/AllergyRestrictions";
+import DietRestrictions from "./steps/DietRestrictions";
 import Calories from "./steps/Calories";
 import Final from "./steps/Final";
 import Nutrients from "./steps/Nutrients";
+import AllergyRestrictions from "./steps/AllergyRestrictions";
 
 function FormContent() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -20,8 +20,8 @@ function FormContent() {
     "Account Information",
     "Diet Restrictions",
     "Allergy Restrictions",
-    "Calories Intake",
     "Nutrients Selection",
+    "Calories Selection",
     "Complete",
   ];
 
@@ -30,17 +30,15 @@ function FormContent() {
       case 1:
         return <Account />;
       case 2:
-        return <Details />;
+        return <DietRestrictions />;
       case 3:
         return <AllergyRestrictions />;
       case 4:
-        return <Calories />;
-      case 5:
         return <Nutrients />;
-      case 6:
-        return <Final />;
+      case 5:
+        return <Calories />;
       default:
-        return <Account />;
+        return <Final />;
     }
   };
 
