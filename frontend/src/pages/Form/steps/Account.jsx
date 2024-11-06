@@ -10,11 +10,13 @@ export default function Account() {
 
   return (
     <div className="flex flex-col">
+       <p className="text-center text-black font-bold mb-5">
+    To help you get started with DietFirst, let's make an account!
+  </p>
+      <div className="bg-gray-100 p-5 rounded-md">
       <div className="mx-2 w-full flex-1">
-        <p className="text-center mb-5">
-          To help you get started with DietFirst, let's make an account!
-        </p>
-        <label className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
+       
+        <label className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-black">
           Username
         </label>
         <div className="my-2 flex rounded border border-gray-200 bg-white p-1">
@@ -28,7 +30,7 @@ export default function Account() {
         </div>
       </div>
       <div className="mx-2 w-full flex-1">
-        <label className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
+        <label className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-black">
           Password
         </label>
         <div className="my-2 flex rounded border border-gray-200 bg-white p-1">
@@ -43,7 +45,7 @@ export default function Account() {
         </div>
       </div>
       <div className="mx-2 w-full flex-1">
-        <label className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
+        <label className="mt-3 h-6 text-sm font-bold uppercase leading-8 text-black">
           Email
         </label>
         <div className="my-2 flex rounded border border-gray-200 bg-white p-1">
@@ -57,6 +59,8 @@ export default function Account() {
           />
         </div>
       </div>
+      </div>
+
     </div>
   );
 }
