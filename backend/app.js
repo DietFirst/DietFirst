@@ -1,9 +1,12 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
 const preferenceRoutes = require("./routes/preferences");
 const cors = require("cors");
+const axios = require("axios");
 
 dotenv.config();
 
@@ -32,6 +35,63 @@ mongoose
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/preferences", preferenceRoutes);
+
+app.get("/api/recipes", async (req, res) => {
+  const { query } = req.query;
+  if (!query) {
+    return res.status(400).json({ error: "Query parameter is required" });
+  }
+  try {
+    const response = await axios.get("https://api.edamam.com/api/recipes/v2", {
+      params: {
+        type: "public", // Required for the new API version
+        q: query,
+        app_id: process.env.EDAMAM_APP_ID,
+        app_key: process.env.EDAMAM_APP_KEY,
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    // Detailed error logging
+    console.error(
+      "Error fetching recipes from Edamam:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).json({ error: "Failed to fetch recipes" });
+  }
+});
+
+app.post("/api/analyze", async (req, res) => {
+  const { ingredients } = req.body;
+  if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
+    return res.status(400).json({ error: "Ingredients are required" });
+  }
+  try {
+    const response = await axios.post(
+      "https://api.edamam.com/api/nutrition-details",
+      {
+        title: "Recipe",
+        ingr: ingredients,
+      },
+      {
+        params: {
+          app_id: process.env.EDAMAM_APP_ID,
+          app_key: process.env.EDAMAM_APP_KEY,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error(
+      "Error analyzing nutrition:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).json({ error: "Failed to analyze nutrition" });
+  }
+});
 
 // Start the server
 const PORT = 3000;
