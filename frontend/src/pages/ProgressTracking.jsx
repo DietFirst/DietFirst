@@ -13,6 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
+import HealthMetricsCharts from "../components/HealthMetricsCharts";  
+
+
 
 const HealthCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -170,6 +173,9 @@ const HealthCalendar = () => {
           ))}
           {generateCalendarDays()}
         </div>
+
+         <HealthMetricsCharts healthData={healthData} />
+
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogContent>
