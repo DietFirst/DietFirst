@@ -13,14 +13,14 @@ router.post("/create", authenticate, async (req, res) => {
   }
 
   const userId = req.userId;
+  const userEmail = req.userEmail;
   console.log("Authenticated userId:", userId);
 
   try {
     const response = await axios.post(
-      `https://api.edamam.com/api/mealplanner/v1/user/recommendation`,
+      `https://api.edamam.com/api/mealplanner/v1/user/${userId}/recommendation`,
       {
-        startDate,
-        endDate,
+        timeWindow: 7,
         preferences,
       },
       {
@@ -30,7 +30,7 @@ router.post("/create", authenticate, async (req, res) => {
         },
         headers: {
           "Content-Type": "application/json",
-          "Edamam-Account-User": userId,
+          "Edamam-Account-User": userEmail,
         },
       }
     );
@@ -47,4 +47,5 @@ router.post("/create", authenticate, async (req, res) => {
     });
   }
 });
+
 module.exports = router;
