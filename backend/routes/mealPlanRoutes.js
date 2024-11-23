@@ -17,7 +17,7 @@ router.post("/create", authenticate, async (req, res) => {
 
   try {
     const response = await axios.post(
-      `https://api.edamam.com/api/mealplanner/v1/${userId}/recommendation`,
+      `https://api.edamam.com/api/mealplanner/v1/user/recommendation`,
       {
         startDate,
         endDate,

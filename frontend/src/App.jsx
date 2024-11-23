@@ -7,6 +7,7 @@ import RecipeSearch from "./components/RecipeSearch";
 import NutritionAnalyzer from "./components/NutritionAnalyzer";
 import MealPlanner from "./components/MealPlanner";
 import ShoppingList from "./components/ShoppingList";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/analyze" element={<NutritionAnalyzer />} />
         <Route path="/mealplanner" element={<MealPlanner />} />
         <Route path="/shoppinglist" element={<ShoppingList />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
