@@ -7,6 +7,9 @@ const authRoutes = require("./routes/auth");
 const preferenceRoutes = require("./routes/preferences");
 const cors = require("cors");
 const axios = require("axios");
+const mealPlanRoutes = require("./routes/mealPlanRoutes");
+const recipeRoutes = require("./routes/recipeRoutes");
+const shoppingListRoutes = require("./routes/shoppingListRoutes");
 
 dotenv.config();
 
@@ -92,6 +95,10 @@ app.post("/api/analyze", async (req, res) => {
     res.status(500).json({ error: "Failed to analyze nutrition" });
   }
 });
+
+app.use("/api/mealplan", mealPlanRoutes);
+app.use("/api/recipes", recipeRoutes);
+app.use("/api/shoppinglist", shoppingListRoutes);
 
 // Start the server
 const PORT = 3000;
