@@ -65,7 +65,6 @@ function MealPlanner() {
               uris,
             },
           );
-          // Handle the response as needed
         } catch (error) {
           console.error(
             "Error fetching recipe details:",
