@@ -7,7 +7,7 @@ import image3 from '../images/healthyimg3.webp';
 const AboutSection = () => {
   return (
     <div>
-      <section className='grid grid-cols-2 gap-4 items-center'>
+      <section className='grid grid-cols-2 gap-4 items-center mt-36'>
         {/* Left Side: Text Content */}
         <div className="relative w-full h-full pl-12">
           {/* Background text "DIETFIRST" */}
