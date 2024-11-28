@@ -2,6 +2,8 @@ import { useState } from "react";
 import Stepper from "./Stepper";
 import StepperControl from "./StepperControl";
 import { UseContextProvider, useStepperContext } from "./StepperContext";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 import Account from "./steps/Account";
 import DietRestrictions from "./steps/DietRestrictions";
@@ -9,6 +11,7 @@ import Calories from "./steps/Calories";
 import Final from "./steps/Final";
 import Nutrients from "./steps/Nutrients";
 import AllergyRestrictions from "./steps/AllergyRestrictions";
+
 
 function FormContent() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -115,7 +118,9 @@ function FormContent() {
   };
 
   return (
-    <div className="mx-auto rounded-2xl pb-2 bg-white shadow-xl md:w-3/4 mt-32">
+    <div>
+ <div className="mx-auto rounded-2xl pb-2 bg-white shadow-xl mb-20 md:w-3/4 mt-32">
+      <Navbar></Navbar>
       {/* Stepper Container */}
       <div className="flex">
         {/* Stepper */}
@@ -139,7 +144,13 @@ function FormContent() {
           loading={loading}
         />
       )}
+                  
     </div>
+   
+   <Footer></Footer>
+
+    </div>
+
   );
 }
 
