@@ -7,12 +7,13 @@ function MealPlanner() {
 
   const [calories, setCalories] = useState("");
   const [diet, setDiet] = useState("");
-  const [health, setHealth] = useState([]);
-  const [cuisineType, setCuisineType] = useState([]);
-  const [mealType, setMealType] = useState([]);
+  const [health, setHealth] = useState("");
+  const [cuisineType, setCuisineType] = useState("");
+  const [mealTypes, setMealTypes] = useState("");
 
   const [preferences, setPreferences] = useState({});
   const [mealPlan, setMealPlan] = useState(null);
+  const [recipesByUri, setRecipesByUri] = useState({});
   const [error, setError] = useState("");
 
   const createMealPlan = async () => {
@@ -45,37 +46,65 @@ function MealPlanner() {
   };
 
   useEffect(() => {
+    const slots = mealTypes
+      .split(",")
+      .map((type) => type.trim())
+      .filter((type) => type !== "")
+      .map((type) => ({
+        name: type,
+        dishTypes: [],
+        criteria: {
+          calories: {
+            min: calories ? parseInt(calories) - 100 : 200,
+            max: calories ? parseInt(calories) + 100 : 600,
+          },
+          diet: diet ? [diet] : [],
+          health: health
+            .split(",")
+            .map((h) => h.trim())
+            .filter((h) => h !== ""),
+          cuisineType: cuisineType
+            .split(",")
+            .map((c) => c.trim())
+            .filter((c) => c !== ""),
+        },
+      }));
+
     setPreferences({
-      calories: calories ? parseInt(calories) : undefined,
-      diet,
-      health,
-      cuisineType,
-      mealType,
+      name: "My Meal Plan",
+      slots,
     });
-  }, [calories, diet, health, cuisineType, mealType]);
+  }, [calories, diet, health, cuisineType, mealTypes]);
 
   useEffect(() => {
-    const fetchRecipeDetails = async () => {
-      if (mealPlan) {
-        try {
-          const uris = mealPlan.items.map((item) => item.recipe.uri);
-          const response = await axios.post(
-            "http://localhost:3000/api/recipes/details",
-            {
-              uris,
-            },
-          );
-        } catch (error) {
-          console.error(
-            "Error fetching recipe details:",
-            error.response?.data || error.message,
-          );
-        }
-      }
-    };
+    const meals = mealTypes
+      .split(",")
+      .map((type) => type.trim())
+      .filter((type) => type !== "")
+      .map((type) => ({
+        slot: type,
+        dishTypes: [],
+        criteria: {
+          calories: {
+            min: calories ? parseInt(calories) - 100 : 200,
+            max: calories ? parseInt(calories) + 100 : 600,
+          },
+          diet: diet ? [diet] : [],
+          health: health
+            .split(",")
+            .map((h) => h.trim())
+            .filter((h) => h !== ""),
+          cuisineType: cuisineType
+            .split(",")
+            .map((c) => c.trim())
+            .filter((c) => c !== ""),
+        },
+      }));
 
-    fetchRecipeDetails();
-  }, [mealPlan]);
+    setPreferences({
+      meals,
+    });
+  }, [calories, diet, health, cuisineType, mealTypes]);
 
   return (
     <div>
@@ -106,38 +135,40 @@ function MealPlanner() {
       />
       <input
         type="text"
-        value={health.join(",")}
-        onChange={(e) => setHealth(e.target.value.split(","))}
+        value={health}
+        onChange={(e) => setHealth(e.target.value)}
         placeholder="Health Labels (comma-separated)"
       />
       <input
         type="text"
-        value={cuisineType.join(",")}
-        onChange={(e) => setCuisineType(e.target.value.split(","))}
+        value={cuisineType}
+        onChange={(e) => setCuisineType(e.target.value)}
         placeholder="Cuisine Type (comma-separated)"
       />
       <input
         type="text"
-        value={mealType.join(",")}
-        onChange={(e) => setMealType(e.target.value.split(","))}
-        placeholder="Meal Type (comma-separated)"
+        value={mealTypes}
+        onChange={(e) => setMealTypes(e.target.value)}
+        placeholder="Meal Types (e.g., Breakfast, Lunch)"
       />
       <button onClick={createMealPlan}>Generate Meal Plan</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {mealPlan && (
         <div>
           <h3>Meal Plan Details:</h3>
-          {mealPlan.items.map((item, index) => (
-            <div key={index}>
-              <p>
-                <strong>Date:</strong> {item.date}
-              </p>
-              <p>
-                <strong>Meal Type:</strong> {item.mealType}
-              </p>
-              <p>
-                <strong>Recipe:</strong> {item.recipe.label}
-              </p>
+          {mealPlan.days.map((day, dayIndex) => (
+            <div key={dayIndex}>
+              <h4>Date: {day.date}</h4>
+              {day.meals.map((meal, mealIndex) => (
+                <div key={mealIndex}>
+                  <p>
+                    <strong>Meal Slot:</strong> {meal.slot}
+                  </p>
+                  <p>
+                    <strong>Recipe URI:</strong> {meal.recipe}
+                  </p>
+                </div>
+              ))}
             </div>
           ))}
         </div>

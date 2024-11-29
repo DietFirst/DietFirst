@@ -1,4 +1,6 @@
 require("dotenv").config();
+console.log("Meal Planner App ID:", process.env.EDAMAM_MP_APP_ID);
+console.log("Meal Planner App Key:", process.env.EDAMAM_MP_APP_KEY);
 
 const express = require("express");
 const mongoose = require("mongoose");
