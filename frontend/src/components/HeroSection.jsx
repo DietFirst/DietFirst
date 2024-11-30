@@ -1,81 +1,51 @@
 import React from 'react'
 import { FaArrowRightLong } from "react-icons/fa6";
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import bgimage from '../images/bgimg2.jpg';
-
+import { useNavigate } from "react-router-dom";
+import bgimage from "../images/bgimg2.jpg";
 
 const HeroSection = () => {
- 
+  const navigate = useNavigate();
 
-
-
-    const navigate = useNavigate(); // Initialize the navigate function
-
-    const handleClick = () => {
-        navigate('/Form'); // Replace '/form' with the correct path to your form component
-    };
-
-
-
+  const handleClick = () => {
+    navigate("/Form");
+  };
 
   return (
-  
-  
+    <section className="h-screen flex items-center justify-between px-8">
+      {/* Left Side: Image */}
+      <div className="flex-1 relative overflow-hidden rounded-lg shadow-lg">
+        <img
+          src={bgimage}
+          alt="Hero Background"
+          className="object-cover w-full h-full transform scale-110 hover:scale-100 transition-transform duration-700"
+        />
+      </div>
+
+      {/* Right Side: Text and Button */}
+      <div className="flex-1 flex flex-col justify-center items-center px-12 md:px-16 lg:px-24 text-white">
+      <h1 className="mb-4 text-4xl font-extrabold text-shadow-lg sm:text-3xl lg:text-6xl text-center whitespace-nowrap w-full">
+  Welcome To Diet First
+</h1>
 
 
-    <section className="lg:py-16 h-screen">
+        <p className="mb-4 text-xl sm:text-lg lg:text-2xl text-shadow-md text-center">
+          Your Personalized Diet Companion
+        </p>
+        <p className="mb-6 text-lg sm:text-md lg:text-xl max-w-3xl text-shadow-md text-center">
+          Are you ready to take control of your health? At DietFirst, we believe that everyone deserves access to healthy food and personalized nutrition.
+        </p>
+        <button
+          onClick={handleClick}
+          className="flex items-center rounded-full bg-white px-8 py-4 shadow-lg transform transition-transform hover:scale-105 hover:shadow-2xl"
+        >
+          <span className="text-lg text-cyan-600">Try It Today</span>
+          <span className="ml-3 rounded-full bg-cyan-600 px-5 py-5">
+            <FaArrowRightLong className="text-white" />
+          </span>
+        </button>
+      </div>
+    </section>
+  );
+};
 
-
-      <img 
-        src={bgimage}
-        alt="Hero Background" 
-        style={{ 
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '100%',
-          opacity: 0.5, 
-          height: '80%',
-          objectFit: 'cover', // Ensures the image covers the entire section
-          transform: 'translate(-50%, -50%)', // Centers the image
-          zIndex: -1 // Sends the image to the back
-        }} 
-      />
-
-
-    <div className="flex flex-col justify-center items-center h-full">
-  
-
-
-      <h1 className="text-white mb-4 text-5xl sm:text-xl lg:text-6xl lg:leading-normal font-extrabold">
-        Welcome To Diet First
-      </h1>
-      <p className="text-[#f6f6f6] text-base sm:text-lg mb-4 lg:text-3xl"> 
-        Your Personalized Diet Companion
-      </p>
-      <p className="text-[#f6f6f6] text-base sm:text-lg mb-6 lg:text-xl text-center"> 
-        Are you ready to take control of your health? At DietFirst, we believe that everyone deserves access to healthy food and personalized nutrition.
-      </p>
-      <button onClick={handleClick} className="rounded-full flex bg-white">
-  <span className='mt-3 text-lg text-cyan-600 px-5'>Try It Today</span> 
-  <span className=" rounded-full px-5 py-5 bg-cyan-600"> 
-    <FaArrowRightLong className="text-white" />
-  </span>
-
-
-
-</button>
-
-
-
-      
-
-
-    </div>
-  </section>
-  
-  
-  )
-}
-
-export default HeroSection
+export default HeroSection;
