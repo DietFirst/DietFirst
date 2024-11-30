@@ -16,10 +16,14 @@ router.post("/create", authenticate, async (req, res) => {
     const endpoint = `https://api.edamam.com/api/meal-planner/v1/${process.env.EDAMAM_MP_APP_ID}/select`;
 
     const requestBody = {
-      from: startDate,
-      to: endDate,
+      size: calculateDaysDifference(startDate, endDate),
       plan: preferences,
     };
+
+    console.log(
+      "Request body being sent to Edamam:",
+      JSON.stringify(requestBody, null, 2)
+    );
 
     const response = await axios.post(endpoint, requestBody, {
       params: {
@@ -47,5 +51,13 @@ router.post("/create", authenticate, async (req, res) => {
     });
   }
 });
+
+function calculateDaysDifference(startDate, endDate) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const diffTime = Math.abs(end - start);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  return diffDays;
+}
 
 module.exports = router;

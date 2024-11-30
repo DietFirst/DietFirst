@@ -22,6 +22,8 @@ function MealPlanner() {
 
       const token = localStorage.getItem("token");
 
+      console.log("Preferences being sent:", preferences);
+
       const response = await axios.post(
         "http://localhost:3000/api/mealplan/create",
         {
@@ -46,65 +48,115 @@ function MealPlanner() {
   };
 
   useEffect(() => {
-    const slots = mealTypes
+    const mealTypeArray = mealTypes
       .split(",")
       .map((type) => type.trim())
-      .filter((type) => type !== "")
-      .map((type) => ({
-        name: type,
-        dishTypes: [],
-        criteria: {
-          calories: {
+      .filter((type) => type !== "");
+
+    const healthLabels = health
+      ? health
+          .split(",")
+          .map((h) =>
+            h.trim().toUpperCase().replace(/-/g, "_").replace(/\s/g, "_"),
+          )
+          .filter((h) => h !== "")
+      : [];
+
+    const dietLabels = diet
+      ? diet
+          .split(",")
+          .map((d) =>
+            d.trim().toUpperCase().replace(/-/g, "_").replace(/\s/g, "_"),
+          )
+          .filter((d) => d !== "")
+      : [];
+
+    const cuisineTypes = cuisineType
+      ? cuisineType
+          .split(",")
+          .map((c) => c.trim().toLowerCase())
+          .filter((c) => c !== "")
+      : [];
+
+    const sections = {};
+    mealTypeArray.forEach((mealType) => {
+      sections[mealType] = {
+        accept: {
+          all: [
+            {
+              dish: [],
+            },
+            {
+              meal: [mealType.toLowerCase()],
+            },
+          ],
+        },
+        fit: {
+          ENERC_KCAL: {
             min: calories ? parseInt(calories) - 100 : 200,
             max: calories ? parseInt(calories) + 100 : 600,
           },
-          diet: diet ? [diet] : [],
-          health: health
-            .split(",")
-            .map((h) => h.trim())
-            .filter((h) => h !== ""),
-          cuisineType: cuisineType
-            .split(",")
-            .map((c) => c.trim())
-            .filter((c) => c !== ""),
         },
-      }));
-
-    setPreferences({
-      name: "My Meal Plan",
-      slots,
+      };
     });
+
+    const plan = {
+      accept: {
+        all: [
+          {
+            health: healthLabels,
+          },
+          {
+            diet: dietLabels,
+          },
+        ],
+      },
+      fit: {},
+      sections,
+    };
+
+    setPreferences(plan);
   }, [calories, diet, health, cuisineType, mealTypes]);
 
   useEffect(() => {
-    const meals = mealTypes
-      .split(",")
-      .map((type) => type.trim())
-      .filter((type) => type !== "")
-      .map((type) => ({
-        slot: type,
-        dishTypes: [],
-        criteria: {
-          calories: {
-            min: calories ? parseInt(calories) - 100 : 200,
-            max: calories ? parseInt(calories) + 100 : 600,
-          },
-          diet: diet ? [diet] : [],
-          health: health
-            .split(",")
-            .map((h) => h.trim())
-            .filter((h) => h !== ""),
-          cuisineType: cuisineType
-            .split(",")
-            .map((c) => c.trim())
-            .filter((c) => c !== ""),
-        },
-      }));
+    const fetchRecipeDetails = async () => {
+      if (mealPlan) {
+        try {
+          const token = localStorage.getItem("token");
+          const uris = [];
+          mealPlan.days.forEach((day) => {
+            day.meals.forEach((meal) => {
+              uris.push(meal.recipe);
+            });
+          });
 
-    setPreferences({
-      meals,
-    });
-  }, [calories, diet, health, cuisineType, mealTypes]);
+          const response = await axios.post(
+            "http://localhost:3000/api/recipes/details",
+            { uris },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
+
+          const recipesMap = {};
+          response.data.forEach((recipe) => {
+            recipesMap[recipe.uri] = recipe;
+          });
+
+          setRecipesByUri(recipesMap);
+        } catch (error) {
+          console.error(
+            "Error fetching recipe details:",
+            error.response?.data || error.message,
+          );
+        }
+      }
+    };
+
+    fetchRecipeDetails();
+  }, [mealPlan]);
 
   return (
     <div>
@@ -164,9 +216,32 @@ function MealPlanner() {
                   <p>
                     <strong>Meal Slot:</strong> {meal.slot}
                   </p>
-                  <p>
-                    <strong>Recipe URI:</strong> {meal.recipe}
-                  </p>
+                  {recipesByUri[meal.recipe] ? (
+                    <>
+                      <p>
+                        <strong>Recipe:</strong>{" "}
+                        {recipesByUri[meal.recipe].label}
+                      </p>
+                      <img
+                        src={recipesByUri[meal.recipe].image}
+                        alt={recipesByUri[meal.recipe].label}
+                        width="200"
+                      />
+                      <p>
+                        <strong>Calories:</strong>{" "}
+                        {Math.round(recipesByUri[meal.recipe].calories)} kcal
+                      </p>
+                      <a
+                        href={recipesByUri[meal.recipe].url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Full Recipe
+                      </a>
+                    </>
+                  ) : (
+                    <p>Loading recipe details...</p>
+                  )}
                 </div>
               ))}
             </div>

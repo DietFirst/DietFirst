@@ -14,6 +14,7 @@ router.post("/details", authenticate, async (req, res) => {
 
   try {
     const recipes = [];
+
     for (const uri of uris) {
       const response = await axios.get(
         "https://api.edamam.com/api/recipes/v2",
@@ -26,6 +27,7 @@ router.post("/details", authenticate, async (req, res) => {
           },
         }
       );
+
       if (response.data && response.data.length > 0) {
         recipes.push(response.data[0]);
       }
