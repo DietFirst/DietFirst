@@ -7,12 +7,13 @@ function MealPlanner() {
 
   const [calories, setCalories] = useState("");
   const [diet, setDiet] = useState("");
-  const [health, setHealth] = useState([]);
-  const [cuisineType, setCuisineType] = useState([]);
-  const [mealType, setMealType] = useState([]);
+  const [health, setHealth] = useState("");
+  const [cuisineType, setCuisineType] = useState("");
+  const [mealTypes, setMealTypes] = useState("");
 
   const [preferences, setPreferences] = useState({});
   const [mealPlan, setMealPlan] = useState(null);
+  const [recipesByUri, setRecipesByUri] = useState({});
   const [error, setError] = useState("");
 
   const createMealPlan = async () => {
@@ -20,6 +21,8 @@ function MealPlanner() {
       setError("");
 
       const token = localStorage.getItem("token");
+
+      console.log("Preferences being sent:", preferences);
 
       const response = await axios.post(
         "http://localhost:3000/api/mealplan/create",
@@ -45,26 +48,104 @@ function MealPlanner() {
   };
 
   useEffect(() => {
-    setPreferences({
-      calories: calories ? parseInt(calories) : undefined,
-      diet,
-      health,
-      cuisineType,
-      mealType,
+    const mealTypeArray = mealTypes
+      .split(",")
+      .map((type) => type.trim())
+      .filter((type) => type !== "");
+
+    const healthLabels = health
+      ? health
+          .split(",")
+          .map((h) =>
+            h.trim().toUpperCase().replace(/-/g, "_").replace(/\s/g, "_"),
+          )
+          .filter((h) => h !== "")
+      : [];
+
+    const dietLabels = diet
+      ? diet
+          .split(",")
+          .map((d) =>
+            d.trim().toUpperCase().replace(/-/g, "_").replace(/\s/g, "_"),
+          )
+          .filter((d) => d !== "")
+      : [];
+
+    const cuisineTypes = cuisineType
+      ? cuisineType
+          .split(",")
+          .map((c) => c.trim().toLowerCase())
+          .filter((c) => c !== "")
+      : [];
+
+    const sections = {};
+    mealTypeArray.forEach((mealType) => {
+      sections[mealType] = {
+        accept: {
+          all: [
+            {
+              dish: [],
+            },
+            {
+              meal: [mealType.toLowerCase()],
+            },
+          ],
+        },
+        fit: {
+          ENERC_KCAL: {
+            min: calories ? parseInt(calories) - 100 : 200,
+            max: calories ? parseInt(calories) + 100 : 600,
+          },
+        },
+      };
     });
-  }, [calories, diet, health, cuisineType, mealType]);
+
+    const plan = {
+      accept: {
+        all: [
+          {
+            health: healthLabels,
+          },
+          {
+            diet: dietLabels,
+          },
+        ],
+      },
+      fit: {},
+      sections,
+    };
+
+    setPreferences(plan);
+  }, [calories, diet, health, cuisineType, mealTypes]);
 
   useEffect(() => {
     const fetchRecipeDetails = async () => {
       if (mealPlan) {
         try {
-          const uris = mealPlan.items.map((item) => item.recipe.uri);
+          const token = localStorage.getItem("token");
+          const uris = [];
+          mealPlan.days.forEach((day) => {
+            day.meals.forEach((meal) => {
+              uris.push(meal.recipe);
+            });
+          });
+
           const response = await axios.post(
             "http://localhost:3000/api/recipes/details",
+            { uris },
             {
-              uris,
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           );
+
+          const recipesMap = {};
+          response.data.forEach((recipe) => {
+            recipesMap[recipe.uri] = recipe;
+          });
+
+          setRecipesByUri(recipesMap);
         } catch (error) {
           console.error(
             "Error fetching recipe details:",
@@ -106,38 +187,63 @@ function MealPlanner() {
       />
       <input
         type="text"
-        value={health.join(",")}
-        onChange={(e) => setHealth(e.target.value.split(","))}
+        value={health}
+        onChange={(e) => setHealth(e.target.value)}
         placeholder="Health Labels (comma-separated)"
       />
       <input
         type="text"
-        value={cuisineType.join(",")}
-        onChange={(e) => setCuisineType(e.target.value.split(","))}
+        value={cuisineType}
+        onChange={(e) => setCuisineType(e.target.value)}
         placeholder="Cuisine Type (comma-separated)"
       />
       <input
         type="text"
-        value={mealType.join(",")}
-        onChange={(e) => setMealType(e.target.value.split(","))}
-        placeholder="Meal Type (comma-separated)"
+        value={mealTypes}
+        onChange={(e) => setMealTypes(e.target.value)}
+        placeholder="Meal Types (e.g., Breakfast, Lunch)"
       />
       <button onClick={createMealPlan}>Generate Meal Plan</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {mealPlan && (
         <div>
           <h3>Meal Plan Details:</h3>
-          {mealPlan.items.map((item, index) => (
-            <div key={index}>
-              <p>
-                <strong>Date:</strong> {item.date}
-              </p>
-              <p>
-                <strong>Meal Type:</strong> {item.mealType}
-              </p>
-              <p>
-                <strong>Recipe:</strong> {item.recipe.label}
-              </p>
+          {mealPlan.days.map((day, dayIndex) => (
+            <div key={dayIndex}>
+              <h4>Date: {day.date}</h4>
+              {day.meals.map((meal, mealIndex) => (
+                <div key={mealIndex}>
+                  <p>
+                    <strong>Meal Slot:</strong> {meal.slot}
+                  </p>
+                  {recipesByUri[meal.recipe] ? (
+                    <>
+                      <p>
+                        <strong>Recipe:</strong>{" "}
+                        {recipesByUri[meal.recipe].label}
+                      </p>
+                      <img
+                        src={recipesByUri[meal.recipe].image}
+                        alt={recipesByUri[meal.recipe].label}
+                        width="200"
+                      />
+                      <p>
+                        <strong>Calories:</strong>{" "}
+                        {Math.round(recipesByUri[meal.recipe].calories)} kcal
+                      </p>
+                      <a
+                        href={recipesByUri[meal.recipe].url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Full Recipe
+                      </a>
+                    </>
+                  ) : (
+                    <p>Loading recipe details...</p>
+                  )}
+                </div>
+              ))}
             </div>
           ))}
         </div>

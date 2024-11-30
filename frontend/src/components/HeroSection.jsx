@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import bgimage from "../images/bgimg2.jpg";
