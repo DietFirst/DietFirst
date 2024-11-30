@@ -26,11 +26,13 @@ router.post("/create", authenticate, async (req, res) => {
     );
 
     const response = await axios.post(endpoint, requestBody, {
-      params: {
-        app_key: process.env.EDAMAM_MP_APP_KEY,
-      },
       headers: {
         "Content-Type": "application/json",
+        "Edamam-Account-User": req.userId || req.userEmail,
+      },
+      auth: {
+        username: process.env.EDAMAM_MP_APP_ID,
+        password: process.env.EDAMAM_MP_APP_KEY,
       },
     });
 
@@ -45,7 +47,7 @@ router.post("/create", authenticate, async (req, res) => {
     } else {
       console.error("Error setting up request:", error.message);
     }
-    res.status(500).json({
+    res.status(error.response?.status || 500).json({
       error: "Failed to create meal plan",
       details: error.response?.data || error.message,
     });
