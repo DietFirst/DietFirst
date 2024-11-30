@@ -49,7 +49,7 @@ app.get("/api/recipes", async (req, res) => {
   try {
     const response = await axios.get("https://api.edamam.com/api/recipes/v2", {
       params: {
-        type: "public", // Required for the new API version
+        type: "public",
         q: query,
         app_id: process.env.EDAMAM_APP_ID,
         app_key: process.env.EDAMAM_APP_KEY,
@@ -57,7 +57,6 @@ app.get("/api/recipes", async (req, res) => {
     });
     res.json(response.data);
   } catch (error) {
-    // Detailed error logging
     console.error(
       "Error fetching recipes from Edamam:",
       error.response ? error.response.data : error.message

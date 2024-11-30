@@ -54,6 +54,42 @@ router.post("/create", authenticate, async (req, res) => {
   }
 });
 
+router.get("/recipe/:recipeId", authenticate, async (req, res) => {
+  try {
+    const { recipeId } = req.params;
+    const url = `https://api.edamam.com/api/recipes/v2/${recipeId}`;
+
+    const response = await axios.get(url, {
+      params: {
+        type: "public",
+        app_id: process.env.EDAMAM_R_APP_ID,
+        app_key: process.env.EDAMAM_R_APP_KEY,
+      },
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    handleError(res, error, "Failed to fetch recipe details");
+  }
+});
+
+function handleError(res, error, message) {
+  if (error.response) {
+    console.error("Error response data:", error.response.data);
+    console.error("Error response status:", error.response.status);
+    res.status(error.response.status).json({
+      error: message,
+      details: error.response.data,
+    });
+  } else if (error.request) {
+    console.error("No response received:", error.request);
+    res.status(500).json({ error: message, details: "No response received" });
+  } else {
+    console.error("Error setting up request:", error.message);
+    res.status(500).json({ error: message, details: error.message });
+  }
+}
+
 function calculateDaysDifference(startDate, endDate) {
   const start = new Date(startDate);
   const end = new Date(endDate);
