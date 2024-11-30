@@ -13,7 +13,6 @@ function MealPlanner() {
 
   const [preferences, setPreferences] = useState({});
   const [mealPlan, setMealPlan] = useState(null);
-  const [groupedAssignments, setGroupedAssignments] = useState(null);
   const [recipesByUri, setRecipesByUri] = useState({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -133,12 +132,10 @@ function MealPlanner() {
 
         for (const [mealType, mealData] of Object.entries(sections)) {
           const assignedUri = mealData.assigned;
-          const recipeLink = mealData._links?.self?.href;
 
           meals.push({
             mealType,
             assignedUri,
-            recipeLink,
           });
         }
 
@@ -157,25 +154,46 @@ function MealPlanner() {
       if (organizedPlan) {
         const fetchedRecipes = {};
 
-        const recipeLinks = [];
+        const recipeIds = [];
         organizedPlan.forEach((day) => {
           day.meals.forEach((meal) => {
             if (!recipesByUri[meal.assignedUri]) {
-              recipeLinks.push({
+              recipeIds.push({
                 assignedUri: meal.assignedUri,
-                recipeLink: meal.recipeLink,
               });
             }
           });
         });
 
         try {
-          const recipePromises = recipeLinks.map((item) =>
-            axios.get(item.recipeLink).then((response) => ({
-              assignedUri: item.assignedUri,
-              recipe: response.data,
-            })),
-          );
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            setError("User not authenticated. Please log in.");
+            return;
+          }
+
+          const recipePromises = recipeIds.map((item) => {
+            const recipeId = item.assignedUri.split("#recipe_")[1];
+
+            return axios
+              .get(`http://localhost:3000/api/mealplan/recipe/${recipeId}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((response) => {
+                console.log(
+                  "Fetched recipe for assignedUri:",
+                  item.assignedUri,
+                  response.data,
+                );
+                return {
+                  assignedUri: item.assignedUri,
+                  recipe: response.data,
+                };
+              });
+          });
 
           const recipesData = await Promise.all(recipePromises);
 
@@ -294,8 +312,9 @@ function MealPlanner() {
               </h4>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {day.meals.map((meal, idx) => {
-                  const recipeData = recipesByUri[meal.assignedUri];
-                  const recipe = recipeData?.recipe;
+                  const recipe = recipesByUri[meal.assignedUri];
+                  console.log("Rendering recipe:", recipe);
+
                   return (
                     <div
                       key={idx}
