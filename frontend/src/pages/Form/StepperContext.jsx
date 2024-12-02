@@ -11,6 +11,11 @@ export const UseContextProvider = ({ children }) => {
     allergyRestrictions: [],
     caloriesInTake: null,
     nutrientsSelection: [],
+    selectedMeals: {
+      Breakfast: false,
+      Lunch: false,
+      Dinner: false
+    },
   });
 
   return (

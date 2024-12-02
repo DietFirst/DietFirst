@@ -7,7 +7,7 @@ import Footer from "../../components/Footer";
 
 import Account from "./steps/Account";
 import DietRestrictions from "./steps/DietRestrictions";
-import Calories from "./steps/Calories";
+import MealsCalories from "./steps/MealsCalories";
 import Final from "./steps/Final";
 import Nutrients from "./steps/Nutrients";
 import AllergyRestrictions from "./steps/AllergyRestrictions";
@@ -24,7 +24,7 @@ function FormContent() {
     "Diet Restrictions",
     "Allergy Restrictions",
     "Nutrients Selection",
-    "Calories Selection",
+    "Meals & Calories Selection",
     "Complete",
   ];
 
@@ -39,7 +39,7 @@ function FormContent() {
       case 4:
         return <Nutrients />;
       case 5:
-        return <Calories />;
+        return <MealsCalories />;
       default:
         return <Final />;
     }
@@ -92,6 +92,7 @@ function FormContent() {
               allergyRestrictions: userData.allergyRestrictions,
               caloriesInTake: userData.caloriesInTake,
               nutrientsSelection: userData.nutrientsSelection,
+              selectedMeals: userData.selectedMeals,
             }),
           });
 
