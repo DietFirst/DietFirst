@@ -8,6 +8,7 @@ import NutritionAnalyzer from "./components/NutritionAnalyzer";
 import MealPlanner from "./components/MealPlanner";
 import ShoppingList from "./components/ShoppingList";
 import Login from "./components/Login";
+import AboutUs from "./pages/AboutUs";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/form" element={<Form />} />
+        <Route path="/about-us" element={<AboutUs />} />
         <Route path="/progress" element={<ProgressTracking />} />
         <Route path="/search" element={<RecipeSearch />} />
         <Route path="/analyze" element={<NutritionAnalyzer />} />
