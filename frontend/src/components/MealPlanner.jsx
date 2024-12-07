@@ -310,36 +310,43 @@ function MealPlanner() {
 
       {error && <p className="mb-4 text-red-500">{error}</p>}
       {organizedPlan && (
-       <div className="meal-plan-details max-w-screen-lg mx-auto px-4 py-8">
-       <h3 className="mb-6 text-3xl font-bold text-gray-800 text-center">Meal Plan Details:</h3>
-       {organizedPlan.map((day, index) => (
-         <div key={index} className="mb-12">
-           <h4 className="mb-4 text-2xl font-semibold text-gray-700">Day {day.dayIndex + 1}</h4>
-           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 w-full">
-             {day.meals.map((meal, idx) => {
-               const recipe = recipesByUri[meal.assignedUri];
-               console.log("Rendering recipe:", recipe);
-     
-               return (
-                 <div className="w-full flex justify-center min-h-48 max-h-screen">
-                   <div className="">
-                     <RecipeCard
-                       key={idx}
-                       recipe={recipe}
-                       mealType={meal.mealType}
-                     />
-                     
-                   </div>
-                 </div>
-               );
-             })}
-           </div>
-         </div>
-       ))}
-     </div>
-     
-     
-      )}
+  <div className="meal-plan-details max-w-screen-lg mx-auto px-4 py-8">
+    <h3 className="mb-6 text-3xl font-bold text-gray-800 text-center">Meal Plan Details:</h3>
+    {organizedPlan.map((day, index) => (
+      <div key={index} className="mb-12">
+        <h4 className="mb-4 text-2xl font-semibold text-gray-700">Day {day.dayIndex + 1}</h4>
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 w-full">
+          {day.meals.map((meal, idx) => {
+            const recipe = recipesByUri[meal.assignedUri];
+            console.log("Rendering recipe:", recipe);
+            
+            // Check if recipe exists
+            if (!recipe) {
+              return (
+                <div key={idx} className="w-full flex justify-center min-h-48 max-h-screen">
+                  <div>Recipe not found for this meal</div>
+                </div>
+              ); // Render a fallback UI if recipe is not found
+            }
+
+            return (
+              <div key={idx} className="w-full flex justify-center min-h-48 max-h-screen">
+                <div>
+                  <RecipeCard
+                    key={idx}
+                    recipe={recipe}  // Pass the valid recipe
+                    mealType={meal.mealType}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
     </div>
   );
 }
