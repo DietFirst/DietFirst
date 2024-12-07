@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import RecipeCard from "/Users/harmainmunir/Desktop/DietFirst/diet-first/frontend/src/components/ui/RecipeCard.jsx";
+import RecipeCard from "../components/ui/RecipeCard.jsx";
 
 const Recipes = ({ organizedPlan, recipesByUri }) => {
   const [error, setError] = useState(null);
