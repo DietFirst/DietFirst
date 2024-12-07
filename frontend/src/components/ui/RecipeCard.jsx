@@ -15,7 +15,7 @@ const RecipeCard = ({ recipe, mealType }) => {
     : recipe.recipe.healthLabels.slice(0, 4);
 
   return (
-    <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition-shadow duration-300 hover:shadow-lg">
+    <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition-shadow duration-300 hover:shadow-lg w-80"> 
       {recipe ? (
         <>
           <img
@@ -23,12 +23,13 @@ const RecipeCard = ({ recipe, mealType }) => {
             alt={recipe.recipe.label}
             className="h-48 w-full object-cover"
           />
-          <div className="flex h-full flex-col p-4">
+          <div className="max-h-[500px] overflow-y-auto flex h-full flex-col p-4">
+
             {/* Meal Type */}
             <div className="bg-white px-4 py-2 rounded-md shadow-md text-center mb-4">
               <p className="text-lg font-semibold text-gray-700">{mealType}</p>
             </div>
-
+            
             {/* Recipe Title */}
             <p className="text-xl font-semibold text-gray-800">{recipe.recipe.label}</p>
 
@@ -38,6 +39,7 @@ const RecipeCard = ({ recipe, mealType }) => {
                 <strong>Calories:</strong> {Math.round(recipe.recipe.calories)} kcal
               </p>
             </div>
+
 
             {/* Health and Diet Labels */}
             <div className="mt-2">
@@ -67,8 +69,8 @@ const RecipeCard = ({ recipe, mealType }) => {
             {/* Ingredients */}
             <div className="mt-4">
               <p className="text-sm font-semibold">Ingredients:</p>
-              <ul className="list-disc pl-6 text-sm">
-                {displayedIngredients.map((ingredient, index) => (
+                <ul className="list-disc pl-6 text-sm">
+                 {displayedIngredients.map((ingredient, index) => (
                   <li
                     key={index}
                     className="bg-yellow-50 p-2 rounded-md shadow-sm text-gray-700"
