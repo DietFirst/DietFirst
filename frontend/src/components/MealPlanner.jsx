@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import RecipeCard from "./ui/RecipeCard";
 
 function MealPlanner() {
   const [startDate, setStartDate] = useState("");
@@ -41,7 +42,7 @@ function MealPlanner() {
         },
       );
       setMealPlan(response.data);
-      console.log("MealPlan data:", response.data);
+      console.log("MealPlan response:", response.data);
     } catch (error) {
       setError("Failed to create meal plan.");
       console.error(
@@ -53,6 +54,7 @@ function MealPlanner() {
     }
   };
 
+  // useEffect for preparing preferences based on input fields
   useEffect(() => {
     const mealTypeArray = mealTypes
       .split(",")
@@ -124,6 +126,7 @@ function MealPlanner() {
     setPreferences(plan);
   }, [calories, diet, health, cuisineType, mealTypes]);
 
+  // useEffect to organize the meal plan once it is fetched
   useEffect(() => {
     if (mealPlan && mealPlan.selection) {
       const plan = mealPlan.selection.map((dayPlan, index) => {
@@ -149,6 +152,7 @@ function MealPlanner() {
     }
   }, [mealPlan]);
 
+  // useEffect for fetching recipe details based on the organized plan
   useEffect(() => {
     const fetchRecipeDetails = async () => {
       if (organizedPlan) {
@@ -215,7 +219,8 @@ function MealPlanner() {
   }, [organizedPlan]);
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto max-w-8xl p-6">
+      <div className="mx-auto max-w-4xl">
       <h2 className="mb-6 text-2xl font-bold">Create Meal Plan</h2>
       <form className="mb-6 rounded-lg bg-gray-100 p-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -301,62 +306,39 @@ function MealPlanner() {
           {loading ? "Generating..." : "Generate Meal Plan"}
         </button>
       </form>
+      </div>
+
       {error && <p className="mb-4 text-red-500">{error}</p>}
       {organizedPlan && (
-        <div className="meal-plan-details">
-          <h3 className="mb-4 text-xl font-bold">Meal Plan Details:</h3>
-          {organizedPlan.map((day, index) => (
-            <div key={index} className="mb-8">
-              <h4 className="mb-4 text-lg font-semibold">
-                Day {day.dayIndex + 1}
-              </h4>
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {day.meals.map((meal, idx) => {
-                  const recipe = recipesByUri[meal.assignedUri];
-                  console.log("Rendering recipe:", recipe);
-
-                  return (
-                    <div
-                      key={idx}
-                      className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition-shadow duration-300 hover:shadow-lg"
-                    >
-                      {recipe ? (
-                        <>
-                          <img
-                            src={recipe.image}
-                            alt={recipe.label}
-                            className="h-48 w-full object-cover"
-                          />
-                          <div className="flex h-full flex-col p-4">
-                            <p className="mb-2 text-sm capitalize text-gray-500">
-                              {meal.mealType}
-                            </p>
-                            <h5 className="mb-2 flex-grow text-lg font-semibold">
-                              {recipe.label}
-                            </h5>
-                            <p className="mb-4 text-sm text-gray-600">
-                              {Math.round(recipe.calories)} kcal
-                            </p>
-                            <a
-                              href={recipe.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="mt-auto inline-block rounded-lg bg-blue-500 px-4 py-2 text-center text-white transition-colors duration-300 hover:bg-blue-600"
-                            >
-                              View Full Recipe
-                            </a>
-                          </div>
-                        </>
-                      ) : (
-                        <p className="p-4">Loading recipe details...</p>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
+       <div className="meal-plan-details max-w-screen-lg mx-auto px-4 py-8">
+       <h3 className="mb-6 text-3xl font-bold text-gray-800 text-center">Meal Plan Details:</h3>
+       {organizedPlan.map((day, index) => (
+         <div key={index} className="mb-12">
+           <h4 className="mb-4 text-2xl font-semibold text-gray-700">Day {day.dayIndex + 1}</h4>
+           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 w-full">
+             {day.meals.map((meal, idx) => {
+               const recipe = recipesByUri[meal.assignedUri];
+               console.log("Rendering recipe:", recipe);
+     
+               return (
+                 <div className="w-full flex justify-center min-h-48 max-h-screen">
+                   <div className="">
+                     <RecipeCard
+                       key={idx}
+                       recipe={recipe}
+                       mealType={meal.mealType}
+                     />
+                     
+                   </div>
+                 </div>
+               );
+             })}
+           </div>
+         </div>
+       ))}
+     </div>
+     
+     
       )}
     </div>
   );
