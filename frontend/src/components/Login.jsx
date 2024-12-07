@@ -7,6 +7,7 @@ function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState(false);  // State to track login success
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +34,9 @@ function Login({ onLogin }) {
         onLogin();
         console.log("Logged in");
       }
+
+      setLoginSuccess(true);  // Set loginSuccess to true on successful login
+
     } catch (error) {
       setError("Invalid email or password.");
       console.error("Login error:", error.response?.data || error.message);
@@ -101,6 +105,13 @@ function Login({ onLogin }) {
           </form>
 
           {error && <p className="mt-4 text-center text-red-500">{error}</p>}
+
+           {/* Displaying success message */}
+           {loginSuccess && (
+            <p className="mt-4 text-center text-green-500 font-semibold">
+              Login successful!
+            </p>
+          )}
 
           {/* Google Login Button with full width */}
           <div className="mt-4">
