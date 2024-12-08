@@ -198,7 +198,8 @@ function AutoMealPlanner() {
   }, [organizedPlan]);
 
   return (
-    <div className="max-w-8xl mx-auto p-6">
+    
+    <div className="max-w-8xl mx-auto p-6 bg-gradient-to-t from-slate-50 to-gray-100">
       <div className="mx-auto max-w-4xl">
         <h2 className="mb-6 text-2xl font-bold">Your Automatic Meal Plan</h2>
         {loading && <p>Generating your meal plan...</p>}

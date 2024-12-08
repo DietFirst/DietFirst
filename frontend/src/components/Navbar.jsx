@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="fixed left-0 right-0 top-0 z-50 bg-transparent py-4">
+    <div className="fixed left-0 right-0 top-0 z-50 py-4" style={{ backgroundColor: '#164e63' }}>
+
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex-none">
           <p className="text-2xl font-semibold text-white">DIET FIRST</p>
