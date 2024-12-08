@@ -12,6 +12,7 @@ const axios = require("axios");
 const mealPlanRoutes = require("./routes/mealPlanRoutes");
 const recipeRoutes = require("./routes/recipeRoutes");
 const shoppingListRoutes = require("./routes/shoppingListRoutes");
+const savedRecipesRoutes = require("./routes/savedRecipe");
 
 dotenv.config();
 
@@ -100,6 +101,7 @@ app.post("/api/analyze", async (req, res) => {
 app.use("/api/mealplan", mealPlanRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/shoppinglist", shoppingListRoutes);
+app.use("/api/recipes", savedRecipesRoutes);
 
 // Start the server
 const PORT = 3000;

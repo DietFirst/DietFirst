@@ -11,6 +11,7 @@ import Login from "./components/Login";
 import AboutUs from "./pages/AboutUs";
 import Recipes from "./pages/Recipes";
 import AutoMealPlanner from "./pages/AutoMealPlanner";
+import SavedRecipes from "./pages/SavedRecipes";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/mealplanner" element={<MealPlanner />} />
         <Route path="/shoppinglist" element={<ShoppingList />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/savedRecipes" element={<SavedRecipes />} />
         <Route path="/recipes" element={<Recipes />} />
       </Routes>
     </Router>
