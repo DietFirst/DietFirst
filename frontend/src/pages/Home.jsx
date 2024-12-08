@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import AboutSection from '../components/AboutSection'
 import Footer from '../components/Footer'
 import WhatWeOffer from '../components/WhatWeOffer'
+import HowItWorks from '../components/HowItWorks'
 
 
 const Home = () => {
@@ -13,6 +14,7 @@ const Home = () => {
         <HeroSection></HeroSection>
         <WhatWeOffer></WhatWeOffer>
         <AboutSection></AboutSection>
+        <HowItWorks></HowItWorks>
 
     </div>
   )
