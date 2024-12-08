@@ -55,6 +55,16 @@ const Navbar = () => {
 
             <li className="group relative">
               <a
+                href="/mealplanner"
+                className="py-1 text-lg transition duration-300 hover:text-cyan-600"
+              >
+                Generate Meal Plan
+              </a>
+              <span className="absolute bottom-0 left-0 h-0.5 w-full scale-x-0 bg-white transition-transform group-hover:scale-x-100"></span>
+            </li>
+
+            <li className="group relative">
+              <a
                 href="/about-us"
                 className="py-1 text-lg transition duration-300 hover:text-cyan-600"
               >
