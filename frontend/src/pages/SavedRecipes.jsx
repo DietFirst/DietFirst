@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import RecipeCard from "../components/ui/RecipeCard";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function SavedRecipes() {
   const [savedRecipes, setSavedRecipes] = useState([]);
@@ -27,8 +25,6 @@ function SavedRecipes() {
         );
         setSavedRecipes(response.data);
 
-        // Show toast notification
-        toast.success("Recipes saved successfully!");
       } catch (err) {
         console.error(
           "Error fetching saved recipes:",
@@ -57,10 +53,9 @@ function SavedRecipes() {
   };
 
   return (
-    <div className="max-w-8xl mx-auto p-6 pt-24">
-      <ToastContainer />
+    <div className="max-w-8xl mx-auto p-6 pt-24 bg-gray-100">
       <div className="mx-auto max-w-4xl text-center">
-        <h2 className="mb-6 text-3xl font-bold text-white border-b-2 pb-2">
+        <h2 className="mb-6 text-3xl font-bold text-black border-b-2 border-black pb-2">
           Your Saved Recipes
         </h2>
         {error && <p className="mb-4 text-red-500">{error}</p>}
