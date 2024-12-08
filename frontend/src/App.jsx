@@ -15,7 +15,7 @@ import AutoMealPlanner from "./pages/AutoMealPlanner";
 function App() {
   return (
     <Router>
-      {/**<Navbar /> */}
+      <Navbar /> 
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -30,7 +30,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/recipes" element={<Recipes />} />
 
-        <Route path="/meal" element={<AutoMealPlanner />} />
+       {/* <Route path="/meal" element={<AutoMealPlanner />} /> */}
       </Routes>
     </Router>
   );
