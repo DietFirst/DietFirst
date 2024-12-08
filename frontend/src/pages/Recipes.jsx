@@ -90,9 +90,16 @@ function AutoMealPlanner() {
           return;
         }
 
+        /* 7 day meal plan
         const startDate = new Date().toISOString().split("T")[0];
         const endDateObj = new Date();
         endDateObj.setDate(endDateObj.getDate() + 6);
+        const endDate = endDateObj.toISOString().split("T")[0];
+        */
+        // 2 day meal plan (limit api hits for now)
+        const startDate = new Date().toISOString().split("T")[0];
+        const endDateObj = new Date();
+        endDateObj.setDate(endDateObj.getDate() + 1);
         const endDate = endDateObj.toISOString().split("T")[0];
 
         const response = await axios.post(

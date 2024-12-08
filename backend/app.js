@@ -13,6 +13,7 @@ const mealPlanRoutes = require("./routes/mealPlanRoutes");
 const recipeRoutes = require("./routes/recipeRoutes");
 const shoppingListRoutes = require("./routes/shoppingListRoutes");
 const savedRecipesRoutes = require("./routes/savedRecipe");
+const progressRoutes = require("./routes/progress");
 
 dotenv.config();
 
@@ -102,6 +103,7 @@ app.use("/api/mealplan", mealPlanRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/shoppinglist", shoppingListRoutes);
 app.use("/api/recipes", savedRecipesRoutes);
+app.use("/api/progress", progressRoutes);
 
 // Start the server
 const PORT = 3000;
