@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const RecipeCard = ({ recipe, mealType }) => {
+const RecipeCard = ({ recipe, mealType, showSaveButton = true }) => {
   const [showMoreIngredients, setShowMoreIngredients] = useState(false);
   const [showMoreHealthLabels, setShowMoreHealthLabels] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
@@ -21,6 +23,7 @@ const RecipeCard = ({ recipe, mealType }) => {
       const token = localStorage.getItem("token");
       if (!token) {
         setSaveMessage("You must be logged in to save recipes.");
+        toast.error("You must be logged in to save recipes.");
         return;
       }
 
@@ -44,20 +47,20 @@ const RecipeCard = ({ recipe, mealType }) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
 
       if (response.status === 201) {
         setSaveMessage("Recipe saved successfully!");
+        toast.success("Recipe saved successfully!");
       } else {
         setSaveMessage("Failed to save recipe.");
+        toast.error("Failed to save recipe.");
       }
     } catch (error) {
-      console.error(
-        "Error saving recipe:",
-        error.response?.data || error.message,
-      );
+      console.error("Error saving recipe:", error.response?.data || error.message);
       setSaveMessage("Error saving recipe.");
+      toast.error("Error saving recipe.");
     }
   };
 
@@ -148,13 +151,17 @@ const RecipeCard = ({ recipe, mealType }) => {
                 View Full Recipe
               </a>
 
-              <button
-                onClick={handleSaveRecipe}
-                className="rounded-md bg-green-500 px-4 py-2 text-center text-sm text-white hover:bg-green-600"
-              >
-                Save Recipe
-              </button>
+              {/* Save Recipe Button (conditionally rendered) */}
+              {showSaveButton && (
+                <button
+                  onClick={handleSaveRecipe}
+                  className="rounded-md bg-green-500 px-4 py-2 text-center text-sm text-white hover:bg-green-600"
+                >
+                  Save Recipe
+                </button>
+              )}
 
+              {/* Save Message */}
               {saveMessage && (
                 <p className="mt-2 text-center text-sm text-gray-700">
                   {saveMessage}
@@ -162,6 +169,7 @@ const RecipeCard = ({ recipe, mealType }) => {
               )}
             </div>
           </div>
+          <ToastContainer />
         </>
       ) : (
         <div className="flex h-full items-center justify-center p-4">

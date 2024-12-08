@@ -206,21 +206,20 @@ function AutoMealPlanner() {
 
   return (
     
-    <div className="max-w-8xl mx-auto p-6 bg-gradient-to-t from-slate-50 to-gray-100">
+    <div className="max-w-8xl mx-auto p-6 pt-32">
       <div className="mx-auto max-w-4xl">
-        <h2 className="mb-6 text-2xl font-bold">Your Automatic Meal Plan</h2>
         {loading && <p>Generating your meal plan...</p>}
         {error && <p className="mb-4 text-red-500">{error}</p>}
       </div>
 
       {organizedPlan && (
         <div className="meal-plan-details mx-auto max-w-screen-lg px-4 py-8">
-          <h3 className="mb-6 text-center text-3xl font-bold text-gray-800">
-            Meal Plan Details:
-          </h3>
+          <h2 className="mb-6 text-3xl uppercasetext-center font-bold text-center text-white border-b-2 pb-2">
+          Your Personalized Meal Plan 
+        </h2>
           {organizedPlan.map((day, index) => (
             <div key={index} className="mb-12">
-              <h4 className="mb-4 text-2xl font-semibold text-gray-700">
+              <h4 className="mb-4 text-2xl font-semibold text-white uppercase">
                 Day {day.dayIndex + 1}
               </h4>
               <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
