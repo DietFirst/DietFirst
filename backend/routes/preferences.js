@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const UserPreference = require("../models/UserPreference");
 const router = express.Router();
+const authenticate = require("../middleware/authenticate");
 
 // Route to save user preferences
 router.post("/", async (req, res) => {
@@ -43,6 +44,22 @@ router.post("/", async (req, res) => {
   } catch (error) {
     console.error("Error saving preferences:", error);
     res.status(500).json({ message: "Server error", error });
+  }
+});
+
+router.get("/my", authenticate, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const preferences = await UserPreference.findOne({ userId });
+    if (!preferences) {
+      return res
+        .status(404)
+        .json({ error: "No preferences found for this user." });
+    }
+    res.json(preferences);
+  } catch (error) {
+    console.error("Error fetching user preferences:", error);
+    res.status(500).json({ error: "Failed to fetch user preferences" });
   }
 });
 

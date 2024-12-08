@@ -10,6 +10,7 @@ import ShoppingList from "./components/ShoppingList";
 import Login from "./components/Login";
 import AboutUs from "./pages/AboutUs";
 import Recipes from "./pages/Recipes";
+import AutoMealPlanner from "./pages/AutoMealPlanner";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/recipes" element={<Recipes />} />
 
+        <Route path="/meal" element={<AutoMealPlanner />} />
       </Routes>
     </Router>
   );
