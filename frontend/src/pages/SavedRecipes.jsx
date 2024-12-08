@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import RecipeCard from "../components/ui/RecipeCard";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function SavedRecipes() {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchSavedRecipes = async () => {
+      setIsLoading(true);
       try {
         const token = localStorage.getItem("token");
         if (!token) {
           setError("You must be logged in to view saved recipes.");
+          setIsLoading(false);
           return;
         }
 
@@ -26,16 +27,11 @@ function SavedRecipes() {
           }
         );
         setSavedRecipes(response.data);
-
-        // Show toast notification
-        toast.success("Recipes saved successfully!");
       } catch (err) {
-        console.error(
-          "Error fetching saved recipes:",
-          err.response?.data || err.message
-        );
+        console.error("Error fetching saved recipes:", err.response?.data || err.message);
         setError("Failed to fetch saved recipes.");
       }
+      setIsLoading(false);
     };
 
     fetchSavedRecipes();
@@ -58,7 +54,6 @@ function SavedRecipes() {
 
   return (
     <div className="max-w-8xl mx-auto p-6 pt-24">
-      <ToastContainer />
       <div className="mx-auto max-w-4xl text-center">
         <h2 className="mb-6 text-3xl font-bold text-white border-b-2 pb-2">
           Your Saved Recipes
@@ -66,7 +61,9 @@ function SavedRecipes() {
         {error && <p className="mb-4 text-red-500">{error}</p>}
       </div>
 
-      {savedRecipes.length > 0 ? (
+      {isLoading ? (
+        <p>Loading...</p> // Show loading state while fetching data
+      ) : savedRecipes.length > 0 ? (
         <div className="mt-8 grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {savedRecipes.map((savedRecipe) => {
             const adaptedRecipe = mapSavedRecipeToRecipeCardFormat(savedRecipe);
