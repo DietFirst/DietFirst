@@ -9,6 +9,7 @@ import MealPlanner from "./components/MealPlanner";
 import ShoppingList from "./components/ShoppingList";
 import Login from "./components/Login";
 import AboutUs from "./pages/AboutUs";
+import Footer from "./components/Footer";
 import Recipes from "./pages/Recipes";
 import AutoMealPlanner from "./pages/AutoMealPlanner";
 import SavedRecipes from "./pages/SavedRecipes";
@@ -32,6 +33,8 @@ function App() {
         <Route path="/savedRecipes" element={<SavedRecipes />} />
         <Route path="/recipes" element={<Recipes />} />
       </Routes>
+
+      <Footer />
     </Router>
   );
 }

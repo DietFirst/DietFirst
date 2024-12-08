@@ -200,7 +200,6 @@ function AutoMealPlanner() {
   return (
     <div className="max-w-8xl mx-auto p-6">
       <div className="mx-auto max-w-4xl">
-        <h2 className="mb-6 text-2xl font-bold">Your Automatic Meal Plan</h2>
         {loading && <p>Generating your meal plan...</p>}
         {error && <p className="mb-4 text-red-500">{error}</p>}
       </div>
