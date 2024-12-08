@@ -16,7 +16,7 @@ import SavedRecipes from "./pages/SavedRecipes";
 function App() {
   return (
     <Router>
-      {/**<Navbar /> */}
+      <Navbar /> 
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -30,8 +30,7 @@ function App() {
         <Route path="/shoppinglist" element={<ShoppingList />} />
         <Route path="/login" element={<Login />} />
         <Route path="/savedRecipes" element={<SavedRecipes />} />
-
-        <Route path="/recipes" element={<AutoMealPlanner />} />
+        <Route path="/recipes" element={<Recipes />} />
       </Routes>
     </Router>
   );

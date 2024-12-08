@@ -34,7 +34,7 @@ export default function Final() {
         <div className="text-lg font-semibold text-gray-500">
           Your Account has been created.
         </div>
-        <a className="mt-10" href="/user/dashboard">
+        <a className="mt-10" href="/recipes">
           <button className="h-10 px-5 text-cyan-600 transition-colors duration-150 border border-gray-300 rounded-lg focus:shadow-outline hover:bg-cyan-600 hover:text-cyan-600">
             Close
           </button>
