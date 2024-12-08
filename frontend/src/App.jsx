@@ -28,9 +28,8 @@ function App() {
         <Route path="/mealplanner" element={<MealPlanner />} />
         <Route path="/shoppinglist" element={<ShoppingList />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/recipes" element={<Recipes />} />
 
-        <Route path="/meal" element={<AutoMealPlanner />} />
+        <Route path="/recipes" element={<AutoMealPlanner />} />
       </Routes>
     </Router>
   );
