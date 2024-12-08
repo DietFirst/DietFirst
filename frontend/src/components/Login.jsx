@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "./Navbar";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loginSuccess, setLoginSuccess] = useState(false);  // State to track login success
+  const [loginSuccess, setLoginSuccess] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,8 +38,7 @@ function Login({ onLogin }) {
         console.log("Logged in");
       }
 
-      setLoginSuccess(true);  // Set loginSuccess to true on successful login
-
+      setLoginSuccess(true);
     } catch (error) {
       setError("Invalid email or password.");
       console.error("Login error:", error.response?.data || error.message);
@@ -45,12 +47,22 @@ function Login({ onLogin }) {
 
   const handleGoogleLogin = (credentialResponse) => {
     console.log("Google login success:", credentialResponse);
-    // Here, you can use the credentialResponse.token to authenticate with your server or Google APIs
+    // Handle Google login token and authenticate with your server if needed
   };
 
   const handleGoogleLoginError = () => {
     console.log("Google Login Failed");
   };
+
+  useEffect(() => {
+    if (loginSuccess) {
+      const timer = setTimeout(() => {
+        navigate("/recipes");
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [loginSuccess, navigate]);
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
@@ -106,10 +118,9 @@ function Login({ onLogin }) {
 
           {error && <p className="mt-4 text-center text-red-500">{error}</p>}
 
-           {/* Displaying success message */}
-           {loginSuccess && (
-            <p className="mt-4 text-center text-green-500 font-semibold">
-              Login successful!
+          {loginSuccess && (
+            <p className="mt-4 text-center font-semibold text-green-500">
+              Login successful! Redirecting to recipes...
             </p>
           )}
 
