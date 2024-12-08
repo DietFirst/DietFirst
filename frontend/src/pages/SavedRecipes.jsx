@@ -5,13 +5,16 @@ import RecipeCard from "../components/ui/RecipeCard";
 function SavedRecipes() {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchSavedRecipes = async () => {
+      setIsLoading(true);
       try {
         const token = localStorage.getItem("token");
         if (!token) {
           setError("You must be logged in to view saved recipes.");
+          setIsLoading(false);
           return;
         }
 
@@ -24,14 +27,11 @@ function SavedRecipes() {
           }
         );
         setSavedRecipes(response.data);
-
       } catch (err) {
-        console.error(
-          "Error fetching saved recipes:",
-          err.response?.data || err.message
-        );
+        console.error("Error fetching saved recipes:", err.response?.data || err.message);
         setError("Failed to fetch saved recipes.");
       }
+      setIsLoading(false);
     };
 
     fetchSavedRecipes();
@@ -61,7 +61,9 @@ function SavedRecipes() {
         {error && <p className="mb-4 text-red-500">{error}</p>}
       </div>
 
-      {savedRecipes.length > 0 ? (
+      {isLoading ? (
+        <p>Loading...</p> // Show loading state while fetching data
+      ) : savedRecipes.length > 0 ? (
         <div className="mt-8 grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {savedRecipes.map((savedRecipe) => {
             const adaptedRecipe = mapSavedRecipeToRecipeCardFormat(savedRecipe);
