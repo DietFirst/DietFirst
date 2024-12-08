@@ -71,14 +71,6 @@ const Navbar = () => {
             <NavLink href="/home">Home</NavLink>
             <NavLink href="/about-us">About Us</NavLink>
 
-            {/* Logged-in User Links */}
-            {isLoggedIn && (
-              <>
-                <NavLink href="/recipes">Recommended Recipes</NavLink>
-                <NavLink href="/savedRecipes">Saved Recipes</NavLink>
-                <NavLink href="/progress">Progress</NavLink>
-              </>
-            )}
           </ul>
 
           {/* Authentication Buttons */}
