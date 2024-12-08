@@ -53,9 +53,9 @@ function SavedRecipes() {
   };
 
   return (
-    <div className="max-w-8xl mx-auto p-6 pt-24 bg-gray-100">
+    <div className="max-w-8xl mx-auto p-6 pt-24 bg-gray-100 py-36">
       <div className="mx-auto max-w-4xl text-center">
-        <h2 className="mb-6 text-3xl font-bold text-black border-b-2 border-black pb-2">
+        <h2 className="mb-6 mt-20 text-3xl font-bold text-black border-b-2 border-black pb-2">
           Your Saved Recipes
         </h2>
         {error && <p className="mb-4 text-red-500">{error}</p>}

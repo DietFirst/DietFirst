@@ -219,9 +219,11 @@ function MealPlanner() {
   }, [organizedPlan]);
 
   return (
-    <div className="mx-auto max-w-8xl p-6">
+    <div className="mx-auto max-w-8xl p-6 mt-[64px] bg-gray-50 py-28">
       <div className="mx-auto max-w-4xl">
-      <h2 className="mb-6 text-2xl font-bold">Create Meal Plan</h2>
+      <h2 className="mb-6 text-3xl uppercasetext-center font-bold text-center text-grey border-b-2 border-black pb-2">
+          Generate A Meal Plan
+        </h2>
       <form className="mb-6 rounded-lg bg-gray-100 p-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
@@ -300,7 +302,7 @@ function MealPlanner() {
           onClick={createMealPlan}
           disabled={loading}
           className={`mt-4 rounded-lg px-4 py-2 text-white ${
-            loading ? "cursor-not-allowed bg-gray-500" : "bg-green-500"
+            loading ? "cursor-not-allowed bg-gray-500" : "bg-cyan-600"
           }`}
         >
           {loading ? "Generating..." : "Generate Meal Plan"}
