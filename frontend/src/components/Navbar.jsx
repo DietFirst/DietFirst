@@ -13,6 +13,12 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    // Add Google Fonts Poppins
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+
     // Check if a user is logged in by the presence of a token in localStorage
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
