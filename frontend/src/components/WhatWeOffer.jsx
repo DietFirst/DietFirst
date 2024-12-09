@@ -1,8 +1,8 @@
 import React from "react";
-import personalizedImage from "../images/personalizedImage.jpg"; // Example image
-import progressTrackingImage from "../images/progressTrackingImage.png"; // Example image
-import saveRecipesImage from "../images/personalizedImage.jpg"; // Example image
-import mealplan from "../images/mealplan.png"; // Example image
+import progressTrackingImage from "../images/progressTrackingImage.png";
+import mealplan from "../images/meal-plan.png"; 
+import savedRecipes from "../images/saved-recipes.png"; 
+
 
 const WhatWeOffer = () => {
   return (
@@ -45,7 +45,7 @@ const WhatWeOffer = () => {
           {/* Save Recipes */}
           <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 ease-in-out">
             <img
-              src={progressTrackingImage}
+              src={savedRecipes}
               alt="Save Recipes"
               className="w-18 h-15 mx-auto mb-4 object-cover rounded-md"
             />
