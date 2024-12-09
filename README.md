@@ -6,7 +6,7 @@
 
 - **User Authentication:** Secure user sign-up and login to access personal diet plans.
 - **Meal Planner:** Users can create and manage their daily, weekly, or monthly meal plans.
-- **Recipe Suggestions:** Personalized healthy recipes based on dietary preferences (e.g., vegetarian, gluten-free).
+- **Recipe Suggestions:** Personalized healthy recipes based on medical conditions, dietary preferences (e.g., vegetarian, gluten-free) and allergies.
 - **Save Recipes:** Users can save recipes they find appealing for easy access later, ensuring convenience and personalization in meal planning.
 - **Progress Tracking:** Monitor progress through visual graphs and reports of health metrics such as weight, sugar levels, blood pressure and cholesterol levels.
 
