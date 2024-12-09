@@ -28,6 +28,10 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.send("backend is running");
+});
+
 // Allow preflight requests
 app.options("*", cors());
 
